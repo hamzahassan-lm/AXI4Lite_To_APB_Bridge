@@ -83,6 +83,7 @@ wire SRDATA;
 		    m_apb_pready, m_apb_prdata, m_apb_pslverr,
 		    state);
 
+
 always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 	if(!s_axi_aresetn) begin
 		reg_axi_bvalid  <= 0;
@@ -114,9 +115,9 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
  		reg_pwrite        <= s_axi_arvalid?0:s_axi_awvalid?1:0;
 	end
 	else begin
- 		captured_addr     <= 0;
- 		reg_m_apb_pwdata  <= 0;
- 		reg_pwrite        <= 0;
+ 		captured_addr     <= captured_addr;
+ 		reg_m_apb_pwdata  <= reg_m_apb_pwdata;
+ 		reg_pwrite        <= reg_pwrite;
 	end
 
 end
