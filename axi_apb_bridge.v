@@ -14,11 +14,14 @@ module axi_apb_bridge
           m_apb_pstrb,m_apb_pprot,
 	);
 parameter c_apb_num_slaves = 1;
-
-
 parameter Idle   = 'd 0;
 parameter Setup  = 'd 1;
 parameter Access = 'd 2;
+parameter Base_Address = 32'h00000000;
+parameter memory_size = 1024;
+parameter division    = memory_size/c_apb_num_slaves;
+
+
 
 input s_axi_clk;
 input s_axi_aresetn;
@@ -42,13 +45,13 @@ input s_axi_rready;
 //input m_apb_presetn;
 output[31:0] m_apb_paddr;
 output[2:0] m_apb_pprot;
-output[c_apb_num_slaves:0] m_apb_psel;
+output[c_apb_num_slaves-1:0] m_apb_psel;
 output m_apb_penable;
 output m_apb_pwrite;
 output[31:0] m_apb_pwdata;
 output[3:0] m_apb_pstrb;
 
-input[c_apb_num_slaves:0] m_apb_pready;
+input[c_apb_num_slaves-1:0] m_apb_pready;
 input[31:0] m_apb_prdata;
 input[31:0] m_apb_prdata2;
 input[31:0] m_apb_prdata3;
@@ -81,7 +84,7 @@ reg[7:0] reg_s_axi_rresp;
 
 wire[1:0] state;
 wire SWRT;
-wire SSEL;
+wire[c_apb_num_slaves-1:0] SSEL;
 wire SWDATA;
 wire SRDATA;
 reg[31:0] sel_m_apb_prdata;
@@ -142,7 +145,19 @@ assign s_axi_rdata   = sel_m_apb_prdata;
 assign SADDR         = captured_addr; 
 assign STREQ         = s_axi_arvalid||s_axi_awvalid ? 1 : 0;
 assign SWRT          = reg_pwrite;
-assign SSEL          = (state == Access) || (state == Setup) ? 1 : 0;
+
+
+genvar i ;
+generate
+	for(i=1;i<=c_apb_num_slaves;i=i+1) begin
+    		assign SSEL[i-1] = (Base_Address+(i)*division)<=captured_addr ? (Base_Address+(i+1)*division)>captured_addr ?
+		1'b1 :1'b0 : 1'b0;
+  	end
+endgenerate
+
+
+
+//assign SSEL          = (state == Access) || (state == Setup) ? 1 : 0;
 assign SWDATA        = reg_m_apb_pwdata;
 
 always@* begin
@@ -166,5 +181,6 @@ always@* begin
       		default  : sel_m_apb_prdata = 0;       // If sel is something, out is commonly zero  
 	endcase
 end
+
 
 endmodule

@@ -79,7 +79,7 @@ assign nst_int1 = STREQ ? Setup : Idle;
 assign nst_int3  = PREADY && STREQ ? Setup : PREADY && ~STREQ ? Idle :~PREADY ? Access : Idle;
 assign nstate  = (state == Idle) ? nst_int1 : (state == Setup) ? Access : (state == Access) ? nst_int3 : Idle;
 
-assign PSELx   = (state == Idle)   ? 1'b0 : 1'b1;
+//assign PSELx   = (state == Idle)   ? 1'b0 : 1'b1;
 assign PENABLE = (state == Access) ? 1'b1 : 1'b0;
 assign PWRITE  = SWRT;
 assign PSELx   = SSEL;
