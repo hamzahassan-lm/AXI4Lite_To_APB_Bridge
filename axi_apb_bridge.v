@@ -1,4 +1,8 @@
 module axi_apb_bridge
+	#(parameter c_apb_num_slaves = 1,
+	  parameter Base_Address = 32'h00000000,
+	  parameter memory_size  = 1024,
+          parameter division     = memory_size/c_apb_num_slaves)
 	( 
 	  s_axi_clk,s_axi_aresetn,
 	  s_axi_awaddr,s_axi_awvalid,s_axi_awready,s_axi_wdata,s_axi_wvalid,s_axi_wready,
@@ -11,17 +15,12 @@ module axi_apb_bridge
 	  m_apb_prdata2,m_apb_prdata3,m_apb_prdata4,m_apb_prdata5,m_apb_prdata6,m_apb_prdata7,
 	  m_apb_prdata8,m_apb_prdata9,m_apb_prdata10,m_apb_prdata11,m_apb_prdata12,m_apb_prdata13,
 	  m_apb_prdata14,m_apb_prdata15,m_apb_prdata16,
+
           m_apb_pstrb,m_apb_pprot,
 	);
-parameter c_apb_num_slaves = 1;
-parameter Idle   = 'd 0;
-parameter Setup  = 'd 1;
-parameter Access = 'd 2;
-parameter Base_Address = 32'h00000000;
-parameter memory_size = 1024;
-parameter division    = memory_size/c_apb_num_slaves;
-
-
+localparam Idle   = 'd 0;
+localparam Setup  = 'd 1;
+localparam Access = 'd 2;
 
 input s_axi_clk;
 input s_axi_aresetn;
@@ -52,6 +51,8 @@ output[31:0] m_apb_pwdata;
 output[3:0] m_apb_pstrb;
 
 input[c_apb_num_slaves-1:0] m_apb_pready;
+//input[31:0] m_apb_prdata [c_apb_num_slaves-1:0];
+
 input[31:0] m_apb_prdata;
 input[31:0] m_apb_prdata2;
 input[31:0] m_apb_prdata3;

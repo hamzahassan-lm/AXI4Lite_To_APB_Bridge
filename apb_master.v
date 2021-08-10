@@ -1,4 +1,5 @@
 module apb_master
+	#(parameter c_apb_num_slaves = 1)
 	( PCLK,PRESETn,
 	  STREQ,SWRT,SSEL,SADDR,SWDATA,SRDATA,
 	  PADDR,PPROT,PSELx,PENABLE,PWRITE,PWDATA,PSTRB,
@@ -90,5 +91,6 @@ assign PWDATA = SWDATA;
 assign SRDATA = PRDATA;
 assign Out_State = state;
 assign PSTRB  = 4'b1111;
+
 endmodule
 
