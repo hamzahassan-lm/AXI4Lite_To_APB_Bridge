@@ -97,27 +97,27 @@ reg[31:0] sel_m_apb_prdata;
 
 
 always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
+
 	if(!s_axi_aresetn) begin
 		reg_axi_bvalid  <= 0;
 		reg_axi_rvalid  <= 0;
 		reg_s_axi_bresp <= 0;
 		reg_s_axi_rresp <= 0;
-		//reg_m_apb_prdata<= 0;
+		
 	end
 	else if((state == Access)&& (m_apb_pready)) begin
-		reg_axi_bvalid   <= m_apb_pwrite  ? 1 : 0;
+		reg_axi_bvalid   <= reg_pwrite  ? 1 : 0;
 		reg_axi_rvalid   <= m_apb_pwrite  ? 0 : 1;
 		reg_s_axi_bresp  <= m_apb_pslverr ?  m_apb_pwrite ? 2 : 0 : 0;
 		reg_s_axi_rresp  <= m_apb_pslverr ? !m_apb_pwrite ? 2 : 0 : 0;
-		//reg_m_apb_prdata <= sel_m_apb_prdata;
+		
 	end
 	else begin
-		
 		reg_axi_bvalid  <= 0;
 		reg_axi_rvalid  <= 0;
 		reg_s_axi_bresp <= 0;
 		reg_s_axi_rresp <= 0;
-		//reg_m_apb_prdata<= 0;
+		
 	end
 	if(!s_axi_aresetn) begin
  		captured_addr     <= 0;
@@ -144,7 +144,7 @@ assign s_axi_wready  = (state==Setup)? s_axi_wvalid ? 1:0:0;
 assign s_axi_rdata   = sel_m_apb_prdata;
 
 assign SADDR         = captured_addr; 
-assign STREQ         = s_axi_arvalid||s_axi_awvalid ? 1 : 0;
+assign STREQ         = (state==Access) && m_apb_pready && reg_pwrite ? 0 : s_axi_arvalid || s_axi_awvalid ? 1 : 0;
 assign SWRT          = reg_pwrite;
 
 
