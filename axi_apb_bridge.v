@@ -163,22 +163,22 @@ assign SWDATA        = reg_m_apb_pwdata;
 
 always@* begin
 	case(m_apb_psel)  
-      		4'b0000  : sel_m_apb_prdata = m_apb_prdata;       // If sel=0, output can be a  
-      		4'b0001  : sel_m_apb_prdata = m_apb_prdata2;       // If sel=0, output can be a
-      		4'b0010  : sel_m_apb_prdata = m_apb_prdata3;       // If sel=0, output can be a  
-      		4'b0011  : sel_m_apb_prdata = m_apb_prdata4;       // If sel=0, output can be a
-      		4'b0100  : sel_m_apb_prdata = m_apb_prdata5;       // If sel=0, output can be a  
-      		4'b0101  : sel_m_apb_prdata = m_apb_prdata6;       // If sel=0, output can be a
-      		4'b0110  : sel_m_apb_prdata = m_apb_prdata7;       // If sel=0, output can be a  
-      		4'b0111  : sel_m_apb_prdata = m_apb_prdata8;       // If sel=0, output can be a
-      		4'b1000  : sel_m_apb_prdata = m_apb_prdata9;       // If sel=0, output can be a  
-      		4'b1001  : sel_m_apb_prdata = m_apb_prdata10;       // If sel=0, output can be a
-      		4'b1010  : sel_m_apb_prdata = m_apb_prdata11;       // If sel=0, output can be a  
-      		4'b1011  : sel_m_apb_prdata = m_apb_prdata12;       // If sel=0, output can be a
-      		4'b1100  : sel_m_apb_prdata = m_apb_prdata13;       // If sel=0, output can be a  
-      		4'b1101  : sel_m_apb_prdata = m_apb_prdata14;       // If sel=0, output can be a
-      		4'b1110  : sel_m_apb_prdata = m_apb_prdata15;       // If sel=0, output can be a  
-      		4'b1111  : sel_m_apb_prdata = m_apb_prdata16;       // If sel=0, output can be a   
+      		16'h0001  : sel_m_apb_prdata = m_apb_prdata;       // If sel=0, output can be a  
+      		16'h0002  : sel_m_apb_prdata = m_apb_prdata2;       // If sel=0, output can be a
+      		16'h0004  : sel_m_apb_prdata = m_apb_prdata3;       // If sel=0, output can be a  
+      		16'h0008  : sel_m_apb_prdata = m_apb_prdata4;       // If sel=0, output can be a
+      		16'h0010  : sel_m_apb_prdata = m_apb_prdata5;       // If sel=0, output can be a  
+      		16'h0020  : sel_m_apb_prdata = m_apb_prdata6;       // If sel=0, output can be a
+      		16'h0040  : sel_m_apb_prdata = m_apb_prdata7;       // If sel=0, output can be a  
+      		16'h0080  : sel_m_apb_prdata = m_apb_prdata8;       // If sel=0, output can be a
+      		16'h0100  : sel_m_apb_prdata = m_apb_prdata9;       // If sel=0, output can be a  
+      		16'h0200  : sel_m_apb_prdata = m_apb_prdata10;       // If sel=0, output can be a
+      		16'h0400  : sel_m_apb_prdata = m_apb_prdata11;       // If sel=0, output can be a  
+      		16'h0800  : sel_m_apb_prdata = m_apb_prdata12;       // If sel=0, output can be a
+      		16'h1000  : sel_m_apb_prdata = m_apb_prdata13;       // If sel=0, output can be a  
+      		16'h2000  : sel_m_apb_prdata = m_apb_prdata14;       // If sel=0, output can be a
+      		16'h4000  : sel_m_apb_prdata = m_apb_prdata15;       // If sel=0, output can be a  
+      		16'h8000  : sel_m_apb_prdata = m_apb_prdata16;       // If sel=0, output can be a   
       		default  : sel_m_apb_prdata = 0;       // If sel is something, out is commonly zero  
 	endcase
 end
