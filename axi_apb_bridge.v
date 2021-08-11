@@ -1,8 +1,9 @@
 module axi_apb_bridge
 	#(parameter c_apb_num_slaves = 1,
-	  parameter Base_Address = 32'h00000000,
-	  parameter memory_size  = 1024,
-          parameter division     = memory_size/c_apb_num_slaves)
+	  parameter Base_Address   = 32'h00000000,
+	  parameter memory_size    = 1024,
+//	  parameter integer memory_regions[c_apb_num_slaves-1 : 0][1:0],
+          parameter division       = memory_size/c_apb_num_slaves)
 	( 
 	  s_axi_clk,s_axi_aresetn,
 	  s_axi_awaddr,s_axi_awvalid,s_axi_awready,s_axi_wdata,s_axi_wvalid,s_axi_wready,
@@ -18,6 +19,10 @@ module axi_apb_bridge
 
           m_apb_pstrb,m_apb_pprot,
 	);
+
+
+parameter [31:0] memory_regions[c_apb_num_slaves-1: 0][1:0] = '{'{1,2},'{1,2},'{1,2}};
+
 localparam Idle   = 'd 0;
 localparam Setup  = 'd 1;
 localparam Access = 'd 2;
@@ -147,7 +152,7 @@ assign SADDR         = captured_addr;
 assign STREQ         = (state==Access) && m_apb_pready && reg_pwrite ? 0 : s_axi_arvalid || s_axi_awvalid ? 1 : 0;
 assign SWRT          = reg_pwrite;
 
-
+/*
 genvar i ;
 generate
 	for(i=1;i<=c_apb_num_slaves;i=i+1) begin
@@ -155,8 +160,14 @@ generate
 		1'b1 :1'b0 : 1'b0;
   	end
 endgenerate
-
-
+*/
+genvar i ;
+generate
+	for(i=1;i<=c_apb_num_slaves;i=i+1) begin
+    		assign SSEL[i-1] = memory_regions[i][0] <=captured_addr ? memory_regions[i][1]>=captured_addr ?
+		1'b1 :1'b0 : 1'b0;
+  	end
+endgenerate
 
 //assign SSEL          = (state == Access) || (state == Setup) ? 1 : 0;
 assign SWDATA        = reg_m_apb_pwdata;
