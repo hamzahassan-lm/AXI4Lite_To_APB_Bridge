@@ -21,7 +21,7 @@ input[31:0]  SWDATA;
 output[31:0] SRDATA;
 
 output[31:0] PADDR;
-output       PPROT;
+output[2:0]  PPROT;
 output       PSELx;
 output	     PENABLE;
 output       PWRITE;

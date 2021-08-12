@@ -2,7 +2,7 @@ module axi_apb_bridge
 	#(parameter c_apb_num_slaves = 1,
 	  parameter Base_Address   = 32'h00000000,
 	  parameter memory_size    = 1024,
-	//   parameter integer memory_regions[c_apb_num_slaves-1 : 0][1:0],
+	  parameter integer memory_regions[c_apb_num_slaves-1 : 0][1:0] = '{'{1,2}},
 	  parameter timeout_val       = 10,
       parameter division       = memory_size/c_apb_num_slaves)
 	(
@@ -57,14 +57,14 @@ module axi_apb_bridge
 	);
 
 
-parameter [31:0] memory_regions[c_apb_num_slaves-1: 0][1:0] = '{'{1,2},'{1,2},'{1,2}};
+// parameter [31:0] memory_regions[c_apb_num_slaves-1: 0][1:0] = '{'{1,2}};
 
 localparam Idle   = 'd 0;
 localparam Setup  = 'd 1;
 localparam Access = 'd 2;
 
 reg [31:0]                  captured_addr; 
-reg [31:0]                  m_apb_pwdata;
+// reg [31:0]                  m_apb_pwdata;
 reg                         reg_pwrite;
 reg [31:0]                  reg_m_apb_pwdata;
 reg [31:0]                  reg_m_apb_prdata;
@@ -77,11 +77,12 @@ wire                        apb_reset;
 wire [1:0]                  state;
 wire                        SWRT;
 wire [c_apb_num_slaves-1:0] SSEL;
-wire                        SWDATA;
-wire                        SRDATA;
+wire [31:0]                 SWDATA;
+wire [31:0]                 SRDATA;
 wire [31:0]                 sel_m_apb_prdata;
 reg  [31:0]                 timeout_counter;
 wire [31:0]                 timeout_counter_nxt;
+wire [31:0]                 SADDR;
 
 apb_master UUT (s_axi_clk, apb_reset, STREQ, SWRT, SSEL,SADDR,SWDATA,SRDATA, m_apb_paddr, m_apb_pprot, m_apb_psel, m_apb_penable,
                 m_apb_pwrite, m_apb_pwdata, m_apb_pstrb, m_apb_pready, m_apb_prdata, m_apb_pslverr, m_apb_prdata2, m_apb_prdata3,
