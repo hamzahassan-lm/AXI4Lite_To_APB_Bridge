@@ -2,23 +2,58 @@ module axi_apb_bridge
 	#(parameter c_apb_num_slaves = 1,
 	  parameter Base_Address   = 32'h00000000,
 	  parameter memory_size    = 1024,
-//	  parameter integer memory_regions[c_apb_num_slaves-1 : 0][1:0],
+	//   parameter integer memory_regions[c_apb_num_slaves-1 : 0][1:0],
 	  parameter timeout_val       = 10,
-          parameter division       = memory_size/c_apb_num_slaves)
-	( 
-	  s_axi_clk,s_axi_aresetn,
-	  s_axi_awaddr,s_axi_awvalid,s_axi_awready,s_axi_wdata,s_axi_wvalid,s_axi_wready,
-	  s_axi_bresp,s_axi_bvalid,s_axi_bready,
-	  s_axi_araddr,s_axi_arvalid,s_axi_arready,
-	  s_axi_rresp,s_axi_rvalid,s_axi_rdata,s_axi_rready,
-
-	  m_apb_paddr,m_apb_pwrite,m_apb_psel,m_apb_penable,
-	  m_apb_pwdata,m_apb_prdata,m_apb_pready,m_apb_pslverr,
-	  m_apb_prdata2,m_apb_prdata3,m_apb_prdata4,m_apb_prdata5,m_apb_prdata6,m_apb_prdata7,
-	  m_apb_prdata8,m_apb_prdata9,m_apb_prdata10,m_apb_prdata11,m_apb_prdata12,m_apb_prdata13,
-	  m_apb_prdata14,m_apb_prdata15,m_apb_prdata16,
-
-          m_apb_pstrb,m_apb_pprot,
+      parameter division       = memory_size/c_apb_num_slaves)
+	(
+      input                         s_axi_clk,
+      input                         s_axi_aresetn,
+      input                         s_axi_awaddr,
+      input                         s_axi_awvalid,
+      output                        s_axi_awready,
+      input                         s_axi_wdata,
+      input                         s_axi_wvalid,
+      output                        s_axi_wready,
+      output [1:0]                  s_axi_bresp,
+      output                        s_axi_bvalid,
+      input                         s_axi_bready,
+      input                         s_axi_araddr,
+      input                         s_axi_arvalid,
+      output                        s_axi_arready,
+      output [1:0]                  s_axi_rresp,
+      output                        s_axi_rvalid,
+      output                        s_axi_rdata,
+      input                         s_axi_rready,
+    //   input                         m_apb_pclk,
+    //   input                         m_apb_presetn,
+      output [31:0]                 m_apb_paddr,
+      output [2:0]                  m_apb_pprot,
+      output [c_apb_num_slaves-1:0] m_apb_psel,
+      output                        m_apb_penable,
+      output                        m_apb_pwrite,
+      output [31:0]                 m_apb_pwdata,
+      output [3:0]                  m_apb_pstrb,
+      
+      input [c_apb_num_slaves-1:0]  m_apb_pready,
+    //   input [31:0]                  m_apb_prdata [c_apb_num_slaves-1:0];
+      
+      input [31:0]                  m_apb_prdata,
+      input [31:0]                  m_apb_prdata2,
+      input [31:0]                  m_apb_prdata3,
+      input [31:0]                  m_apb_prdata4,
+      input [31:0]                  m_apb_prdata5,
+      input [31:0]                  m_apb_prdata6,
+      input [31:0]                  m_apb_prdata7,
+      input [31:0]                  m_apb_prdata8,
+      input [31:0]                  m_apb_prdata9,
+      input [31:0]                  m_apb_prdata10,
+      input [31:0]                  m_apb_prdata11,
+      input [31:0]                  m_apb_prdata12,
+      input [31:0]                  m_apb_prdata13,
+      input [31:0]                  m_apb_prdata14,
+      input [31:0]                  m_apb_prdata15,
+      input [31:0]                  m_apb_prdata16,
+      input                         m_apb_pslverr
 	);
 
 
@@ -28,86 +63,33 @@ localparam Idle   = 'd 0;
 localparam Setup  = 'd 1;
 localparam Access = 'd 2;
 
-input s_axi_clk;
-input s_axi_aresetn;
-input s_axi_awaddr;
-input s_axi_awvalid;
-output s_axi_awready;
-input s_axi_wdata;
-input s_axi_wvalid;
-output s_axi_wready;
-output[1:0] s_axi_bresp;
-output s_axi_bvalid;
-input s_axi_bready;
-input s_axi_araddr;
-input s_axi_arvalid;
-output s_axi_arready;
-output[1:0] s_axi_rresp;
-output s_axi_rvalid;
-output s_axi_rdata;
-input s_axi_rready;
-//input m_apb_pclk;
-//input m_apb_presetn;
-output[31:0] m_apb_paddr;
-output[2:0] m_apb_pprot;
-output[c_apb_num_slaves-1:0] m_apb_psel;
-output m_apb_penable;
-output m_apb_pwrite;
-output[31:0] m_apb_pwdata;
-output[3:0] m_apb_pstrb;
+reg [31:0]                  captured_addr; 
+reg [31:0]                  m_apb_pwdata;
+reg                         reg_pwrite;
+reg [31:0]                  reg_m_apb_pwdata;
+reg [31:0]                  reg_m_apb_prdata;
+reg                         reg_axi_bvalid;
+reg                         reg_axi_rvalid;
+reg [1:0]                   reg_s_axi_bresp;
+reg [1:0]                   reg_s_axi_rresp;
 
-input[c_apb_num_slaves-1:0] m_apb_pready;
-//input[31:0] m_apb_prdata [c_apb_num_slaves-1:0];
+wire                        apb_reset;
+wire [1:0]                  state;
+wire                        SWRT;
+wire [c_apb_num_slaves-1:0] SSEL;
+wire                        SWDATA;
+wire                        SRDATA;
+wire [31:0]                 sel_m_apb_prdata;
+reg  [31:0]                 timeout_counter;
+wire [31:0]                 timeout_counter_nxt;
 
-input[31:0] m_apb_prdata;
-input[31:0] m_apb_prdata2;
-input[31:0] m_apb_prdata3;
-input[31:0] m_apb_prdata4;
-input[31:0] m_apb_prdata5;
-input[31:0] m_apb_prdata6;
-input[31:0] m_apb_prdata7;
-input[31:0] m_apb_prdata8;
-input[31:0] m_apb_prdata9;
-input[31:0] m_apb_prdata10;
-input[31:0] m_apb_prdata11;
-input[31:0] m_apb_prdata12;
-input[31:0] m_apb_prdata13;
-input[31:0] m_apb_prdata14;
-input[31:0] m_apb_prdata15;
-input[31:0] m_apb_prdata16;
-input m_apb_pslverr;
-
-reg[31:0] captured_addr; 
-reg[31:0] m_apb_pwdata;
-reg       reg_pwrite;
-reg[31:0] reg_m_apb_pwdata;
-reg[31:0] reg_m_apb_prdata;
-reg reg_axi_bvalid;
-reg reg_axi_rvalid;
-reg[1:0] reg_s_axi_bresp;
-reg[1:0] reg_s_axi_rresp;
-
-wire apb_reset;
-wire[1:0] state;
-wire SWRT;
-wire[c_apb_num_slaves-1:0] SSEL;
-wire SWDATA;
-wire SRDATA;
-wire[31:0] sel_m_apb_prdata;
-reg[31:0] timeout_counter;
-wire[31:0] timeout_counter_nxt;
-
-    apb_master UUT (s_axi_clk ,  apb_reset, STREQ, SWRT, SSEL,SADDR,SWDATA,SRDATA,
-		    m_apb_paddr,  m_apb_pprot  , m_apb_psel, m_apb_penable,m_apb_pwrite,m_apb_pwdata,m_apb_pstrb,
-		    m_apb_pready, m_apb_prdata, m_apb_pslverr,
-		    m_apb_prdata2,m_apb_prdata3,m_apb_prdata4,m_apb_prdata5,m_apb_prdata6,m_apb_prdata7,
-		    m_apb_prdata8,m_apb_prdata9,m_apb_prdata10,m_apb_prdata11,m_apb_prdata12,m_apb_prdata13,
-		    m_apb_prdata14,m_apb_prdata15,m_apb_prdata16,
-		    state);
+apb_master UUT (s_axi_clk, apb_reset, STREQ, SWRT, SSEL,SADDR,SWDATA,SRDATA, m_apb_paddr, m_apb_pprot, m_apb_psel, m_apb_penable,
+                m_apb_pwrite, m_apb_pwdata, m_apb_pstrb, m_apb_pready, m_apb_prdata, m_apb_pslverr, m_apb_prdata2, m_apb_prdata3,
+                m_apb_prdata4, m_apb_prdata5, m_apb_prdata6, m_apb_prdata7, m_apb_prdata8, m_apb_prdata9, m_apb_prdata10,
+                m_apb_prdata11, m_apb_prdata12, m_apb_prdata13, m_apb_prdata14, m_apb_prdata15, m_apb_prdata16, state);
 
 
 always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
-
 	if(!s_axi_aresetn) begin
 		reg_axi_bvalid  <= 0;
 		reg_axi_rvalid  <= 0;
@@ -120,14 +102,12 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 		reg_axi_rvalid      <= m_apb_pwrite  ? 0 : 1;
 		reg_s_axi_bresp  <= m_apb_pslverr ?  m_apb_pwrite ? 2'b10 : 0 : 0;
 		reg_s_axi_rresp  <= m_apb_pslverr ? !m_apb_pwrite ? 2'b10 : 0 : 0;
-		
 	end
 	else begin
 		reg_axi_bvalid  <= 0;
 		reg_axi_rvalid  <= 0;
 		reg_s_axi_bresp <= 0;
 		reg_s_axi_rresp <= 0;
-		
 	end
 	if(!s_axi_aresetn) begin
  		captured_addr     <= 0;
@@ -158,7 +138,6 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 		timeout_counter <= timeout_val-1;
 	else 
 		timeout_counter <= timeout_counter;
-
 end
 
  
