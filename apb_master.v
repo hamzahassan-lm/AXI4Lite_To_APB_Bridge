@@ -4,6 +4,9 @@ module apb_master
 	  STREQ,SWRT,SSEL,SADDR,SWDATA,SRDATA,
 	  PADDR,PPROT,PSELx,PENABLE,PWRITE,PWDATA,PSTRB,
 	  PREADY,PRDATA,PSLVERR,
+	  m_apb_prdata2,m_apb_prdata3,m_apb_prdata4,m_apb_prdata5,m_apb_prdata6,m_apb_prdata7,
+	  m_apb_prdata8,m_apb_prdata9,m_apb_prdata10,m_apb_prdata11,m_apb_prdata12,m_apb_prdata13,
+	  m_apb_prdata14,m_apb_prdata15,m_apb_prdata16,
 	  Out_State
 	);
 
@@ -27,6 +30,21 @@ output[3:0]  PSTRB;
 
 input        PREADY;
 input[31:0]  PRDATA;
+input[31:0] m_apb_prdata2;
+input[31:0] m_apb_prdata3;
+input[31:0] m_apb_prdata4;
+input[31:0] m_apb_prdata5;
+input[31:0] m_apb_prdata6;
+input[31:0] m_apb_prdata7;
+input[31:0] m_apb_prdata8;
+input[31:0] m_apb_prdata9;
+input[31:0] m_apb_prdata10;
+input[31:0] m_apb_prdata11;
+input[31:0] m_apb_prdata12;
+input[31:0] m_apb_prdata13;
+input[31:0] m_apb_prdata14;
+input[31:0] m_apb_prdata15;
+input[31:0] m_apb_prdata16;
 input        PSLVERR;
 
 output[1:0]  Out_State;
