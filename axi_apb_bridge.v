@@ -180,36 +180,10 @@ assign apb_reset        = (state == Access) && timeout_counter^32'h00000000 ? 0 
 genvar i ;
 generate
 	for(i=1;i<=c_apb_num_slaves;i=i+1) begin
-    		assign SSEL[i-1] = memory_regions[i][0] <=captured_addr ? memory_regions[i][1]>=captured_addr ?
-		1'b1 :1'b0 : 1'b0;
+    		assign SSEL[i-1] = (memory_regions[i][0] <=captured_addr) & (memory_regions[i][1]>=captured_addr);
   	end
 endgenerate
 
-//assign SSEL          = (state == Access) || (state == Setup) ? 1 : 0;
-
-/*
-always@* begin
-	case(m_apb_psel)  
-      		16'h0001  : sel_m_apb_prdata = m_apb_prdata;       // If sel=0, output can be a  
-      		16'h0002  : sel_m_apb_prdata = m_apb_prdata2;       // If sel=0, output can be a
-      		16'h0004  : sel_m_apb_prdata = m_apb_prdata3;       // If sel=0, output can be a  
-      		16'h0008  : sel_m_apb_prdata = m_apb_prdata4;       // If sel=0, output can be a
-      		16'h0010  : sel_m_apb_prdata = m_apb_prdata5;       // If sel=0, output can be a  
-      		16'h0020  : sel_m_apb_prdata = m_apb_prdata6;       // If sel=0, output can be a
-      		16'h0040  : sel_m_apb_prdata = m_apb_prdata7;       // If sel=0, output can be a  
-      		16'h0080  : sel_m_apb_prdata = m_apb_prdata8;       // If sel=0, output can be a
-      		16'h0100  : sel_m_apb_prdata = m_apb_prdata9;       // If sel=0, output can be a  
-      		16'h0200  : sel_m_apb_prdata = m_apb_prdata10;       // If sel=0, output can be a
-      		16'h0400  : sel_m_apb_prdata = m_apb_prdata11;       // If sel=0, output can be a  
-      		16'h0800  : sel_m_apb_prdata = m_apb_prdata12;       // If sel=0, output can be a
-      		16'h1000  : sel_m_apb_prdata = m_apb_prdata13;       // If sel=0, output can be a  
-      		16'h2000  : sel_m_apb_prdata = m_apb_prdata14;       // If sel=0, output can be a
-      		16'h4000  : sel_m_apb_prdata = m_apb_prdata15;       // If sel=0, output can be a  
-      		16'h8000  : sel_m_apb_prdata = m_apb_prdata16;       // If sel=0, output can be a   
-      		default  : sel_m_apb_prdata = 0;       // If sel is something, out is commonly zero  
-	endcase
-end
-*/
 assign sel_m_apb_prdata = {32{(m_apb_psel == 16'h0001)}} & m_apb_prdata   |
                           {32{(m_apb_psel == 16'h0002)}} & m_apb_prdata2  |
                           {32{(m_apb_psel == 16'h0004)}} & m_apb_prdata3  |
