@@ -166,7 +166,7 @@ end
 assign s_axi_arready    = (state==Setup)?s_axi_arvalid?1:0:0;
 assign s_axi_awready    = (state==Setup)?s_axi_arvalid?0:s_axi_awvalid?1:0:0;
 assign s_axi_wready     = (state==Setup)? s_axi_wvalid ? 1:0:0; 
-assign s_axi_rdata      = sel_m_apb_prdata;
+assign s_axi_rdata      = (state == Access) && timeout_counter^32'h00000000 ? 32'h00000000 : sel_m_apb_prdata;
 assign s_axi_bresp      = (state == Access) && timeout_counter^32'h00000000 ? 2'b10 : reg_s_axi_bresp;
 assign s_axi_rresp      = (state == Access) && timeout_counter^32'h00000000 ? 2'b10 : reg_s_axi_rresp; 
 
