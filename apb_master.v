@@ -10,6 +10,7 @@ module apb_master
 	  Out_State
 	);
 
+
 input       PCLK;
 input       PRESETn;
 
@@ -28,7 +29,7 @@ output       PWRITE;
 output[31:0] PWDATA;
 output[3:0]  PSTRB;
 
-input        PREADY;
+input[c_apb_num_slaves-1:0] PREADY;
 input[31:0]  PRDATA;
 input[31:0] m_apb_prdata2;
 input[31:0] m_apb_prdata3;
@@ -95,7 +96,7 @@ end
 */
 
 assign nst_int1 = STREQ ? Setup : Idle;
-assign nst_int3  = PREADY && STREQ ? Setup : PREADY && ~STREQ ? Idle :~PREADY ? Access : Idle;
+assign nst_int3  = |PREADY && STREQ ? Setup : |PREADY && ~STREQ ? Idle :~|PREADY ? Access : Idle;
 assign nstate  = (state == Idle) ? nst_int1 : (state == Setup) ? Access : (state == Access) ? nst_int3 : Idle;
 
 //assign PSELx   = (state == Idle)   ? 1'b0 : 1'b1;

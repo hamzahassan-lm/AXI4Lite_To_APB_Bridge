@@ -1,0 +1,120 @@
+0 
+32
++itf+/eda_tools/vcs201809/linux64/lib/vcsdp_lite.tab
++vcsd1
++vpi
+-Mamsrun=
+-Masflags=
+-Mcc=gcc
+-Mcfl= -pipe -fPIC -O -I/eda_tools/vcs201809/include
+-Mcplusplus=g++
+-Mcrt0=
+-Mcrtn=
+-Mcsrc=
+-Mexternalobj=
+-Mldflags= -Wl,--no-as-needed -rdynamic
+-Mobjects= /eda_tools/vcs201809/linux64/lib/libvirsim.so /eda_tools/vcs201809/linux64/lib/liberrorinf.so /eda_tools/vcs201809/linux64/lib/libsnpsmalloc.so /eda_tools/vcs201809/linux64/lib/libvfs.so
+-Mout=simv
+-Msaverestoreobj=/eda_tools/vcs201809/linux64/lib/vcs_save_restore_new.o
+-Msyslibs=/eda_tools/verdi201809/share/PLI/VCS/LINUX64/pli.a -ldl
+-Mvcsaceobjs=
+-Mxcflags= -pipe -fPIC -I/eda_tools/vcs201809/include
+-P
+-debug_acc+all
+-debug_region+cell+encrypt
+-fsdb
+-full64
+-gen_obj
+-picarchive
+-sverilog
+/eda_tools/vcs201809/linux64/bin/vcs1
+/eda_tools/verdi201809/share/PLI/VCS/LINUX64/verdi.tab
+apb_master.v
+axi_apb_bridge.v
+flop.v
+71
+install_root=/softwares/softwares_setups/verilator-4.034
+XDG_SESSION_ID=34858
+XDG_RUNTIME_DIR=/run/user/1016
+XDG_MENU_PREFIX=xfce-
+XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop:/usr/share
+XDG_CURRENT_DESKTOP=XFCE
+XDG_CONFIG_DIRS=/etc/xdg
+VTE_VERSION=5202
+VNCDESKTOP=broadPeak:11 (hamzahassan)
+VMR_MODE_FLAG=64
+VERILATOR_ROOT=/softwares/softwares_setups/verilator-4.034
+VERDI_VCS_PLI=-P /eda_tools/verdi201809/share/PLI/VCS/LINUX64/novas.tab /eda_tools/verdi201809/share/PLI/VCS/LINUX64/pli.a
+VERDI_UVSIM_LIB=-L/eda_tools/verdi201809/share/PLI/IUS/LINUX64 -L/eda_tools/verdi201809/share/FsdbWriter/LINUX64
+VERDI_UVSIM_INCLUDE=-I/eda_tools/verdi201809/share/PLI/IUS/LINUX64
+VERDI_NCVERILOG_PLI=+loadpli1=/eda_tools/verdi201809/share/PLI/IUS/LINUX64/boot/debpli:novas_pli_boot
+VERDI_NCELAB_PLI=-LOADPLI1 /eda_tools/verdi201809/share/PLI/IUS/LINUX64/boot/debpli:novas_pli_boot
+VERDI_HOME=/eda_tools/verdi201809
+VERDI_FSDBSC=-L/eda_tools/verdi201809/share/PLI/IUS/LINUX64 -lfsdbSC -L/eda_tools/verdi201809/share/FsdbWriter/LINUX64 -lnffw -I/eda_tools/verdi201809/share/PLI/IUS/LINUX64
+VERDI=/eda_tools/verdi201809
+VCS_TARGET_ARCH=amd64
+VCS_MX_HOME_INTERNAL=1
+VCS_MODE_FLAG=64
+VCS_HOME=/eda_tools/vcs201809
+VCS_DEPTH=0
+VCS_ARG_ADDED_FOR_TMP=1
+VCS_ARCH_OVERRIDE=linux
+VCS_ARCH=linux64
+UNAME=/bin/uname
+TOOL_HOME=/eda_tools/vcs201809/linux64
+TERMINATOR_UUID=urn:uuid:02aa15e6-8bde-45f2-928d-358f5c57233b
+TERMINATOR_DBUS_PATH=/net/tenshu/Terminator2
+TERMINATOR_DBUS_NAME=net.tenshu.Terminator20x759fefb18a339e2f
+S_COLORS=auto
+SYSTEMC_HOME_2=/usr/local/systemc-2.3/
+SYSTEMC_HOME=/usr/local/systemc-2.3.1/
+SYNOP_VCS=/eda_tools/vcs201809/bin
+SYNOP_PT=/eda_tools/pt201806
+SYNOP_FM=/eda_tools/formaility-201806sp5
+SSH_TTY=/dev/pts/64
+SSH_CONNECTION=192.168.94.108 58428 192.168.14.240 20779
+SSH_CLIENT=192.168.94.108 58428 20779
+SSH_AUTH_SOCK=/tmp/ssh-8qnIBtSI93qz/agent.15951
+SSH_AGENT_PID=15952
+SNPS_VCS_INTERNAL_UBUNTU_PRE_LDFLAGS= -no-pie 
+SESSION_MANAGER=local/BroadPeak:@/tmp/.ICE-unix/15941,unix/BroadPeak:/tmp/.ICE-unix/15941
+SCRNAME=vcs
+SCRIPT_NAME=vcs
+RISCV_PATH=/home/users/cores/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14
+RISCV=/home/users/cores/rocket-chip/riscv_toolchain
+PLATFORM=LINUX64
+OVA_UUM=0
+NOVS_VERDI=/eda_tools/verdi201809/bin
+NOVAS_HOME=/eda_tools/verdi201809
+LC_TIME=en_US.UTF-8
+LC_TELEPHONE=ur_PK
+LC_PAPER=ur_PK
+LC_NUMERIC=ur_PK
+LC_NAME=ur_PK
+LC_MONETARY=ur_PK
+LC_MEASUREMENT=ur_PK
+LC_IDENTIFICATION=ur_PK
+LC_ALL=C
+LC_ADDRESS=ur_PK
+GLADE_PIXMAP_PATH=:
+GLADE_MODULE_PATH=:
+GLADE_CATALOG_PATH=:
+DESKTOP_SESSION=xfce
+DEBUSSY_HOME=/eda_tools/verdi201809
+DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-gY8Ts1pADJ,guid=31b2289d37ca747cd186f5c161126190
+COLORTERM=truecolor
+ARCH=amd64
+0
+5
+1629177626 flop.v
+1629177626 axi_apb_bridge.v
+1629177626 apb_master.v
+1591195226 /eda_tools/verdi201809/share/PLI/VCS/LINUX64/verdi.tab
+1591195213 /eda_tools/vcs201809/linux64/lib/vcsdp_lite.tab
+4
+1591195211 /eda_tools/vcs201809/linux64/lib/libvirsim.so
+1591195213 /eda_tools/vcs201809/linux64/lib/liberrorinf.so
+1591195211 /eda_tools/vcs201809/linux64/lib/libsnpsmalloc.so
+1591195212 /eda_tools/vcs201809/linux64/lib/libvfs.so
+1629177978 simv.daidir
+-1 partitionlib
