@@ -196,6 +196,8 @@ reg       read_valid_reg;
 reg       write_resp_valid_reg;
 reg[31:0] read_data_reg;
 reg[31:0] captured_addr;
+reg[1:0]  read_resp ;
+reg[1:0]  write_resp;
 
 wire      apb_transfer_req;
 
@@ -289,8 +291,8 @@ Bridge_Idle:
 	end
 	read_valid_reg       <= 1'b0;
 	read_data_reg        <= 32'h00000000;
-
-
+	read_resp            <= read_resp;
+	write_resp           <= write_resp;
 
 axi_read:
 	if (condition1_state_axi_read)begin 				//condition1_state_axi_read
@@ -300,6 +302,7 @@ axi_read:
 				captured_addr        <= s_axi_araddr;
 				axi_write_data_reg   <= 32'h00000000;
 				write_req_reg        <= 1'b0;	
+
 			end
 			else if ((s_axi_awvalid) && (s_axi_wvalid))  begin	//condition112_state_axi_read
 				bridge_state         <= axi_write;
@@ -320,7 +323,7 @@ axi_read:
 				axi_write_data_reg   <= s_axi_wdata;
 				write_req_reg        <= 1'b0;
 			end
-
+		
 		end
 		else begin						//condition12_state_axi_read
 			bridge_state         <= axi_read_response_send_wait;
@@ -328,16 +331,20 @@ axi_read:
 			axi_write_data_reg   <= 32'h00000000;
 			write_req_reg        <= 1'b0;
 		end
-		read_valid_reg  <= 1'b1;
-		read_data_reg   <= sel_m_apb_prdata;
+		read_valid_reg       <= 1'b1;
+		read_data_reg  	     <= sel_m_apb_prdata;
+		read_resp            <= slave_resp;
+
 	end
 	else if (condition2_state_axi_read) begin
 		if(wait_counter<max_count) begin
-			bridge_state = axi_read;
+			bridge_state    <= axi_read;
+			read_resp       <= read_resp;
 		end		
 		else begin
-			bridge_state <= Bridge_Idle;
+			bridge_state    <= Bridge_Idle;
 			//send error respone through axi read response channel
+			read_resp       <= Error_resp; 
 			
 		end
 		captured_addr        <= 32'h00000000;
@@ -346,18 +353,35 @@ axi_read:
 		read_valid_reg       <= 1'b0;
 		read_data_reg        <= 32'h00000000;
 	end
+
 	write_happened       <= 1'b0;
+	write_resp_valid_reg <= 1'b0;
+	write_resp           <= write_resp;
 
 axi_write:
 	if ((state == Access) && (|m_apb_pready))
-		bridge_state <= Idle 
+
+
+reg[1:0]  read_resp ;
+reg[1:0]  ;
+
+
 			
 		To DO:
 			capture_write_data_response
 			assert write valid response
 
+		axi_write_data_reg   <= axi_write_data_reg;
+		write_happened       <= 1'b1;
+		bridge_state         <= Bridge_Idle;
+		write_req_reg        <= 1'b0;
+		read_valid_reg       <= 1'b0;
+		write_resp_valid_reg <= 1'b0;
+		read_data_reg        <= 32'h00000000;
+		captured_addr        <= 32'h00000000;
+		write_resp           <= slave_write_resp;
+
 	else if ((state == Access) && (!|m_apb_pready))
-		
 		if(wait_counter<max_count)
 			bridge_state = axi_write;
 			To Do:
@@ -393,7 +417,6 @@ axi_write_address_wait:
 		bridge_state = axi_write_address_wait;
 
 axi_read_response_send_wait:
-
 	if (s_axi_rready)
 		if ((s_axi_awvalid) && (s_axi_wvalid))
 				bridge_state = axi_write		
@@ -419,6 +442,5 @@ axi_read_response_send_wait:
 
 	read_valid_reg  <= 1'b1;
 	read_data_reg <= read_data_reg;
-
 
 endmodule
