@@ -193,6 +193,10 @@ reg       write_happened;
 reg[2:0]  bridge_state;
 reg       write_req_reg;
 reg       read_valid_reg;
+reg       write_resp_valid_reg;
+reg[31:0] read_data_reg;
+reg[31:0] captured_addr;
+
 wire      apb_transfer_req;
 
       input [31:0]                  s_axi_awaddr,
@@ -235,8 +239,6 @@ assign apb_transfer_req = (condition11_state_Idle      | condition12_state_Idle)
 				;
 
 
-
-
 Bridge_Idle:
 	if(condition1_state_Idle) begin
 		if ((axi_read_address_valid) && ((state == Idle) || (state == Access))) begin	//condition11_state_Idle
@@ -244,6 +246,7 @@ Bridge_Idle:
 			captured_addr        <= s_axi_araddr;
 			axi_write_data_reg   <= 32'h00000000;
 			write_req_reg        <= 1'b0;
+
 		end
 		else if((s_axi_awvalid) && (s_axi_wvalid) && (state == Idle))			//condition12_state_Idle
 			bridge_state 	     <= axi_write;
@@ -264,6 +267,16 @@ Bridge_Idle:
 			write_req_reg        <= 1'b0;
 
 		write_happened <= 1'b0;
+		write_resp_valid_reg <= 1'b0;
+	end
+	else if(condition2_state_Idle) begin
+
+		bridge_state 	     <= Bridge_Idle;
+		axi_write_data_reg   <= 32'h00000000;
+		write_req_reg        <= 1'b0;
+		captured_addr        <= 32'h00000000;
+		write_happened       <= write_happened;
+		write_resp_valid_reg <= 1'b1;
 	end
 	else begin
 		bridge_state 	     <= Bridge_Idle;
@@ -271,9 +284,13 @@ Bridge_Idle:
 		write_req_reg        <= 1'b0;
 		captured_addr        <= 32'h00000000;
 		write_happened       <= write_happened;
+		write_resp_valid_reg <= 1'b0;
+       
 	end
-	read_valid_reg  <= 1'b0;
-	read_data_reg   <= 32'h00000000;
+	read_valid_reg       <= 1'b0;
+	read_data_reg        <= 32'h00000000;
+
+
 
 axi_read:
 	if (condition1_state_axi_read)begin 				//condition1_state_axi_read
@@ -304,45 +321,42 @@ axi_read:
 				write_req_reg        <= 1'b0;
 			end
 
-			To DO:
-			capture data
-			send read data response
-			send read data back to axi master
-			assert read valid signal
-
 		end
 		else begin						//condition12_state_axi_read
-			bridge_state = axi_read_response_send_wait
-			To DO:
-				capture data
-				assert read valid signal
+			bridge_state         <= axi_read_response_send_wait;
+			captured_addr        <= 32'h00000000;
+			axi_write_data_reg   <= 32'h00000000;
+			write_req_reg        <= 1'b0;
 		end
 		read_valid_reg  <= 1'b1;
 		read_data_reg   <= sel_m_apb_prdata;
-		
 	end
 	else if (condition2_state_axi_read) begin
 		if(wait_counter<max_count) begin
 			bridge_state = axi_read;
-			To Do:
 		end		
 		else begin
-			bridge_state = Idle;
-			To Do:
-				send error respone through axi read response channel
+			bridge_state <= Bridge_Idle;
+			//send error respone through axi read response channel
+			
 		end
+		captured_addr        <= 32'h00000000;
+		axi_write_data_reg   <= 32'h00000000;
+		write_req_reg        <= 1'b0;
+		read_valid_reg       <= 1'b0;
+		read_data_reg        <= 32'h00000000;
 	end
 	write_happened       <= 1'b0;
 
 axi_write:
-	if ((state == Access) && (m_apb_pready))
-		bridge_state = Idle 
+	if ((state == Access) && (|m_apb_pready))
+		bridge_state <= Idle 
+			
 		To DO:
-			write_happend = true
 			capture_write_data_response
 			assert write valid response
 
-	else if ((state == Access) && (!m_apb_pready))
+	else if ((state == Access) && (!|m_apb_pready))
 		
 		if(wait_counter<max_count)
 			bridge_state = axi_write;
@@ -356,6 +370,7 @@ axi_write:
 
 	read_valid_reg  <= 1'b0;
 	read_data_reg   <= 32'h00000000;
+	write_happened  <= 1'b1;
 
 
 axi_write_data_wait:
