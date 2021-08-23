@@ -69,6 +69,7 @@ localparam Idle   = 'd 0;
 localparam Setup  = 'd 1;
 localparam Access = 'd 2;
 
+
 reg  [31:0]                 captured_addr; 
 // reg [31:0]                  m_apb_pwdata;
 reg                         reg_pwrite;
@@ -95,7 +96,7 @@ wire                        reg_axi_bvalid_ns, reg_axi_rvalid_ns;
 wire [1:0]                  reg_s_axi_bresp_ns, reg_s_axi_rresp_ns;
 
 
-
+/*
 apb_master UUT (s_axi_clk, apb_reset, STREQ, SWRT, SSEL,SADDR,SWDATA,SRDATA, m_apb_paddr, m_apb_pprot, m_apb_psel, m_apb_penable,
                 m_apb_pwrite, m_apb_pwdata, m_apb_pstrb, m_apb_pready, m_apb_prdata, m_apb_pslverr, m_apb_prdata2, m_apb_prdata3,
                 m_apb_prdata4, m_apb_prdata5, m_apb_prdata6, m_apb_prdata7, m_apb_prdata8, m_apb_prdata9, m_apb_prdata10,
@@ -159,7 +160,7 @@ assign SWDATA           = reg_m_apb_pwdata;
 
 assign apb_reset        = (state == Access) && timeout_counter^32'h00000000 ? 0 : s_axi_aresetn;
 
-
+*/
 
 genvar i;
 generate
@@ -185,6 +186,224 @@ assign sel_m_apb_prdata = {32{(m_apb_psel == 16'h0001)}} & m_apb_prdata   |
                           {32{(m_apb_psel == 16'h2000)}} & m_apb_prdata14 |
                           {32{(m_apb_psel == 16'h4000)}} & m_apb_prdata15 |
                           {32{(m_apb_psel == 16'h8000)}} & m_apb_prdata16;
+
+
+reg[31:0] axi_write_data_reg;
+reg       write_happened;
+reg[2:0]  bridge_state;
+reg       write_req_reg;
+reg       read_valid_reg;
+wire      apb_transfer_req;
+
+      input [31:0]                  s_axi_awaddr,
+      input                         s_axi_awvalid,
+      output                        s_axi_awready,
+      input  [31:0]                 s_axi_wdata,
+      input                         s_axi_wvalid,
+
+
+wire condition1_state_Idle  = (bridge_state == Bridge_Idle) & ((write_happened && s_axi_bready)||(!write_happened));
+wire condition2_state_Idle  = (bridge_state == Bridge_Idle) & (write_happened && !axi_bready);
+wire condition3_state_Idle  = (bridge_state == Bridge_Idle) ;
+
+wire condition11_state_Idle = condition1_state_Idle & (axi_read_address_valid) && ((state == Idle) | (state == Access));
+wire condition12_state_Idle = condition1_state_Idle & (s_axi_awvalid) && (s_axi_wvalid) && (state == Idle);
+wire condition13_state_Idle = condition1_state_Idle & (!(s_axi_awvalid) && (s_axi_wvalid) && (state == Idle));
+wire condition14_state_Idle = condition1_state_Idle & ((s_axi_awvalid) && !(s_axi_wvalid) && (state == Idle));
+
+wire condition1_state_axi_read  = (bridge_state == axi_read) & ((state == Access) && (|m_apb_pready));
+wire condition2_state_axi_read  = (bridge_state == axi_read) & ((state == Access) && (!|m_apb_pready));
+wire condition3_state_axi_read  = (bridge_state == axi_read) ;
+
+wire condition11_state_axi_read = condition1_state_axi_read & (s_axi_rready);
+wire condition12_state_axi_read = condition1_state_axi_read & !(s_axi_rready);
+
+
+wire condition111_state_axi_read = condition11_state_axi_read & (axi_read_address_valid);
+wire condition112_state_axi_read = condition11_state_axi_read & ((s_axi_awvalid) && (s_axi_wvalid));
+wire condition113_state_axi_read = condition11_state_axi_read & ((s_axi_awvalid) && (!s_axi_wvalid));
+wire condition114_state_axi_read = condition11_state_axi_read & ((!s_axi_awvalid) && (s_axi_wvalid));
+
+
+assign apb_transfer_req = (condition11_state_Idle      | condition12_state_Idle)      ? 1'b1 :
+			  (condition13_state_Idle      | condition14_state_Idle)      ? 1'b0 :
+			  (condition2_state_Idle       | condition3_state_Idle )      ? 1'b0 : 
+			  (condition111_state_axi_read | condition112_state_axi_read) ? 1'b1 :
+			  (condition113_state_axi_read | condition114_state_axi_read) | (condition12_state_axi_read) ? 1'b0 :
+			  (condition2_state_axi_read)                                 ? 1'b0 :
+			  
+				;
+
+
+
+
+Bridge_Idle:
+	if(condition1_state_Idle) begin
+		if ((axi_read_address_valid) && ((state == Idle) || (state == Access))) begin	//condition11_state_Idle
+			bridge_state         <= axi_read;
+			captured_addr        <= s_axi_araddr;
+			axi_write_data_reg   <= 32'h00000000;
+			write_req_reg        <= 1'b0;
+		end
+		else if((s_axi_awvalid) && (s_axi_wvalid) && (state == Idle))			//condition12_state_Idle
+			bridge_state 	     <= axi_write;
+			captured_addr        <= s_axi_awaddr;
+			axi_write_data_reg   <= s_axi_wdata;
+			write_req_reg        <= 1'b1;
+
+		else if(!(s_axi_awvalid) && (s_axi_wvalid) && (state == Idle))			//condition13_state_Idle
+			bridge_state         <= axi_write_address_wait;
+			captured_addr        <= 32'h00000000;
+			axi_write_data_reg   <= s_axi_wdata;
+			write_req_reg        <= 1'b0;
+
+		else if((s_axi_awvalid) && !(s_axi_wvalid) && (state == Idle))			//condition14_state_Idle
+			bridge_state         <= axi_write_data_wait;
+			captured_addr        <= s_axi_awaddr;
+			axi_write_data_reg   <= 32'h00000000;
+			write_req_reg        <= 1'b0;
+
+		write_happened <= 1'b0;
+	end
+	else begin
+		bridge_state 	     <= Bridge_Idle;
+		axi_write_data_reg   <= 32'h00000000;
+		write_req_reg        <= 1'b0;
+		captured_addr        <= 32'h00000000;
+		write_happened       <= write_happened;
+	end
+	read_valid_reg  <= 1'b0;
+	read_data_reg   <= 32'h00000000;
+
+axi_read:
+	if (condition1_state_axi_read)begin 				//condition1_state_axi_read
+		if (s_axi_rready) begin  				//condition11_state_axi_read
+			if (axi_read_address_valid)  begin			//condition111_state_axi_read
+				bridge_state         <= axi_read;
+				captured_addr        <= s_axi_araddr;
+				axi_write_data_reg   <= 32'h00000000;
+				write_req_reg        <= 1'b0;	
+			end
+			else if ((s_axi_awvalid) && (s_axi_wvalid))  begin	//condition112_state_axi_read
+				bridge_state         <= axi_write;
+				captured_addr        <= s_axi_awaddr;
+				axi_write_data_reg   <= s_axi_wdata;
+				write_req_reg        <= 1'b1;
+			end
+			else if ((s_axi_awvalid) && (!s_axi_wvalid)) begin	//condition113_state_axi_read				
+				bridge_state         <= axi_write_data_wait;
+				captured_addr        <= s_axi_awaddr;
+				axi_write_data_reg   <= 32'h00000000;
+				write_req_reg        <= 1'b0;
+					
+			end
+			else if ((!s_axi_awvalid) && (s_axi_wvalid)) begin	//condition114_state_axi_read
+				bridge_state         <= axi_write_address_wait;
+				captured_addr        <= 32'h00000000;
+				axi_write_data_reg   <= s_axi_wdata;
+				write_req_reg        <= 1'b0;
+			end
+
+			To DO:
+			capture data
+			send read data response
+			send read data back to axi master
+			assert read valid signal
+
+		end
+		else begin						//condition12_state_axi_read
+			bridge_state = axi_read_response_send_wait
+			To DO:
+				capture data
+				assert read valid signal
+		end
+		read_valid_reg  <= 1'b1;
+		read_data_reg   <= sel_m_apb_prdata;
+		
+	end
+	else if (condition2_state_axi_read) begin
+		if(wait_counter<max_count) begin
+			bridge_state = axi_read;
+			To Do:
+		end		
+		else begin
+			bridge_state = Idle;
+			To Do:
+				send error respone through axi read response channel
+		end
+	end
+	write_happened       <= 1'b0;
+
+axi_write:
+	if ((state == Access) && (m_apb_pready))
+		bridge_state = Idle 
+		To DO:
+			write_happend = true
+			capture_write_data_response
+			assert write valid response
+
+	else if ((state == Access) && (!m_apb_pready))
+		
+		if(wait_counter<max_count)
+			bridge_state = axi_write;
+			To Do:
+		else 
+			bridge_state = Idle;
+			To Do:
+				send error respone through axi write response channel
+	else:
+		bridge_state = axi_write;
+
+	read_valid_reg  <= 1'b0;
+	read_data_reg   <= 32'h00000000;
+
+
+axi_write_data_wait:
+	if(s_axi_wvalid)
+		bridge_state = axi_write;
+		To Do:
+			capture write data
+	else:
+		bridge_state = axi_write_data_wait;
+
+	read_valid_reg  <= 1'b0;
+	read_data_reg   <= 32'h00000000;
+
+axi_write_address_wait:
+	if(s_axi_wvalid)
+		bridge_state = axi_write;
+		To Do:
+			capture write address
+	else:
+		bridge_state = axi_write_address_wait;
+
+axi_read_response_send_wait:
+
+	if (s_axi_rready)
+		if ((s_axi_awvalid) && (s_axi_wvalid))
+				bridge_state = axi_write		
+			To DO:
+				capture address
+				capture data
+				initiate transfer on apb master
+
+		elseif ((s_axi_awvalid) && (!s_axi_wvalid))
+				bridge_state = axi_write_data_wait				
+			To DO:
+				capture address
+				
+
+		elseif ((!s_axi_awvalid) && (s_axi_wvalid))
+				bridge_state = axi_write_address_wait				
+		To DO:
+			send read data response
+			send read data back to axi master
+			assert read valid signal
+	else 
+		bridge_state = axi_read_response_send_wait
+
+	read_valid_reg  <= 1'b1;
+	read_data_reg <= read_data_reg;
 
 
 endmodule
