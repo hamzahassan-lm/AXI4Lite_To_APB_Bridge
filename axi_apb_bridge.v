@@ -1,4 +1,4 @@
-import axi_lite_pkg::*;
+//import axi_lite_pkg::*;
 module axi_apb_bridge
 	#(parameter c_apb_num_slaves = 1,
 	  parameter Base_Address   = 32'h00000000,
