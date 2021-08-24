@@ -106,6 +106,7 @@ assign PSELx   = SSEL;
 
 
 assign PADDR = SADDR;
+
 assign PWDATA = SWDATA;
 assign SRDATA = PRDATA;
 assign Out_State = state;
