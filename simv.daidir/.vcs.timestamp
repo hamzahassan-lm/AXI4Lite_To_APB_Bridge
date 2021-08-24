@@ -62,8 +62,8 @@ SYNOP_VCS=/eda_tools/vcs201809/bin
 SYNOP_PT=/eda_tools/pt201806
 SYNOP_FM=/eda_tools/formaility-201806sp5
 SSH_TTY=/dev/pts/26
-SSH_CONNECTION=192.168.94.108 59248 192.168.14.240 20779
-SSH_CLIENT=192.168.94.108 59248 20779
+SSH_CONNECTION=192.168.94.108 39964 192.168.14.240 20779
+SSH_CLIENT=192.168.94.108 39964 20779
 SNPS_VCS_INTERNAL_UBUNTU_PRE_LDFLAGS= -no-pie 
 SCRNAME=vcs
 SCRIPT_NAME=vcs
@@ -88,7 +88,7 @@ ARCH=amd64
 0
 5
 1629438660 flop.v
-1629709239 axi_apb_bridge.v
+1629807305 axi_apb_bridge.v
 1629455850 apb_master.v
 1591195226 /eda_tools/verdi201809/share/PLI/VCS/LINUX64/verdi.tab
 1591195213 /eda_tools/vcs201809/linux64/lib/vcsdp_lite.tab
@@ -97,5 +97,5 @@ ARCH=amd64
 1591195213 /eda_tools/vcs201809/linux64/lib/liberrorinf.so
 1591195211 /eda_tools/vcs201809/linux64/lib/libsnpsmalloc.so
 1591195212 /eda_tools/vcs201809/linux64/lib/libvfs.so
-1629709249 simv.daidir
+1629807313 simv.daidir
 -1 partitionlib

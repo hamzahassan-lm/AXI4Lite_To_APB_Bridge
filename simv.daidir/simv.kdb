@@ -7,7 +7,7 @@ UUM=FALSE
 KDB=FALSE
 USE_NOVAS_HOME=FALSE
 COSIM=FALSE
-TOP=axi_apb_bridge 
+TOP=axi_apb_bridge flop 
 OPTION=-ssz -ssv -ssy 
 ELAB_OPTION=-ssz -ssv -ssy 
 

@@ -5,5 +5,5 @@ PYTHONPATH=/eda_tools/vcs201809/linux64/lib/pylib27
 export PYTHONPATH
 LD_LIBRARY_PATH=/eda_tools/vcs201809/linux64/lib:/eda_tools/vcs201809/linux64/lib/pylib27
 export LD_LIBRARY_PATH
-/eda_tools/vcs201809/linux64/bin/vcsfind_create_index.exe  -z  "/home/users/hamzahassan/axi_apb_bridge/axi_apb_bridge/simv.daidir/debug_dump/fsearch/./idents_tapi.xml.gz" "/home/users/hamzahassan/axi_apb_bridge/axi_apb_bridge/simv.daidir/debug_dump/fsearch/./idents_yIpuiH.xml.gz" -o "/home/users/hamzahassan/axi_apb_bridge/axi_apb_bridge/simv.daidir/debug_dump/fsearch/fsearch.db_tmp"
+/eda_tools/vcs201809/linux64/bin/vcsfind_create_index.exe  -z  "/home/users/hamzahassan/axi_apb_bridge/axi_apb_bridge/simv.daidir/debug_dump/fsearch/./idents_tapi.xml.gz" "/home/users/hamzahassan/axi_apb_bridge/axi_apb_bridge/simv.daidir/debug_dump/fsearch/./idents_V5BBEu.xml.gz" -o "/home/users/hamzahassan/axi_apb_bridge/axi_apb_bridge/simv.daidir/debug_dump/fsearch/fsearch.db_tmp"
 \mv "/home/users/hamzahassan/axi_apb_bridge/axi_apb_bridge/simv.daidir/debug_dump/fsearch/fsearch.db_tmp" "/home/users/hamzahassan/axi_apb_bridge/axi_apb_bridge/simv.daidir/debug_dump/fsearch/fsearch.db"
