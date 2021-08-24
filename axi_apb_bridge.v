@@ -369,6 +369,7 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 		if(s_axi_wvalid) begin
 			bridge_state = axi_write;
 			axi_write_data_reg <= s_axi_wdata;
+			write_req_reg        <= 1'b1;
 		end
 		else begin
 			bridge_state = axi_write_data_wait;
@@ -381,6 +382,7 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 		if(s_axi_awvalid) begin
 			bridge_state 	   <= axi_write;
 			captured_addr      <= s_axi_awaddr;
+			write_req_reg        <= 1'b1;
 		end
 		else begin
 			bridge_state	   <= axi_write_address_wait;
