@@ -59,7 +59,7 @@ module axi_apb_bridge
       input [31:0]                  m_apb_prdata14,
       input [31:0]                  m_apb_prdata15,
       input [31:0]                  m_apb_prdata16,
-      input                         m_apb_pslverr
+      input [c_apb_num_slaves-1:0]  m_apb_pslverr
 	);
 
 
@@ -212,7 +212,7 @@ wire condition1_state_Idle  = (bridge_state == Bridge_Idle) & ((write_happened &
 wire condition2_state_Idle  = (bridge_state == Bridge_Idle) & (write_happened && !axi_bready);
 wire condition3_state_Idle  = (bridge_state == Bridge_Idle) ;
 
-wire condition11_state_Idle = condition1_state_Idle & (axi_read_address_valid) && ((state == Idle) | (state == Access));
+wire condition11_state_Idle = condition1_state_Idle & (s_axi_arvalid) && ((state == Idle) | (state == Access));
 wire condition12_state_Idle = condition1_state_Idle & (s_axi_awvalid) && (s_axi_wvalid) && (state == Idle);
 wire condition13_state_Idle = condition1_state_Idle & (!(s_axi_awvalid) && (s_axi_wvalid) && (state == Idle));
 wire condition14_state_Idle = condition1_state_Idle & ((s_axi_awvalid) && !(s_axi_wvalid) && (state == Idle));
@@ -225,25 +225,45 @@ wire condition11_state_axi_read = condition1_state_axi_read & (s_axi_rready);
 wire condition12_state_axi_read = condition1_state_axi_read & !(s_axi_rready);
 
 
-wire condition111_state_axi_read = condition11_state_axi_read & (axi_read_address_valid);
+wire condition111_state_axi_read = condition11_state_axi_read & (s_axi_arvalid);
 wire condition112_state_axi_read = condition11_state_axi_read & ((s_axi_awvalid) && (s_axi_wvalid));
 wire condition113_state_axi_read = condition11_state_axi_read & ((s_axi_awvalid) && (!s_axi_wvalid));
 wire condition114_state_axi_read = condition11_state_axi_read & ((!s_axi_awvalid) && (s_axi_wvalid));
 
+wire condition1_state_axi_read_response_wait  = (bridge_state == read_response_wait) & (s_axi_rready);
+wire condition2_state_axi_read_response_wait  = (bridge_state == read_response_wait) & (!s_axi_rready);
+wire condition11_state_axi_read_response_wait  = condition1_state_axi_read_response_wait & (s_axi_arvalid);
+wire condition12_state_axi_read_response_wait  = condition1_state_axi_read_response_wait & ((s_axi_awvalid) && (s_axi_wvalid));
+wire condition13_state_axi_read_response_wait  = condition1_state_axi_read_response_wait & ((s_axi_awvalid) && (!s_axi_wvalid));
+wire condition14_state_axi_read_response_wait  = condition1_state_axi_read_response_wait & ((!s_axi_awvalid) && (s_axi_wvalid));
 
-assign apb_transfer_req = (condition11_state_Idle      | condition12_state_Idle)      ? 1'b1 :
-			  (condition13_state_Idle      | condition14_state_Idle)      ? 1'b0 :
-			  (condition2_state_Idle       | condition3_state_Idle )      ? 1'b0 : 
-			  (condition111_state_axi_read | condition112_state_axi_read) ? 1'b1 :
-			  (condition113_state_axi_read | condition114_state_axi_read) | (condition12_state_axi_read) ? 1'b0 :
-			  (condition2_state_axi_read)                                 ? 1'b0 :
+
+wire condition1_state_axi_write_address_wait  = (bridge_state == axi_write_address_wait) & (s_axi_awvalid);
+wire condition2_state_axi_write_address_wait  = (bridge_state == axi_write_address_wait) & (!s_axi_awvalid);
+
+assign apb_transfer_req = (condition11_state_Idle | condition12_state_Idle) | (condition111_state_axi_read | condition112_state_axi_read) |
 			  
 				;
 
+assign s_axi_arready    = condition11_state_Idle      | condition111_state_axi_read | condition11_state_axi_read_response_wait ;
 
-Bridge_Idle:
+
+assign s_axi_awready    = condition12_state_Idle      | condition14_state_Idle      | 
+			  condition112_state_axi_read | condition113_state_axi_read |
+			  (bridge_state == axi_write_address_wait)                  | 
+			  (condition12_state_axi_read_response_wait)                | condition13_state_axi_read_response_wait ;
+
+
+assign s_axi_wready     = condition12_state_Idle | condition13_state_Idle | 
+			  (bridge_state == axi_write_data_wait)           |
+			  (condition12_state_axi_read_response_wait)      | condition14_state_axi_read_response_wait ;	  
+	
+wire Bridge_Idle_state  = bridge_state == Bridge_Idle;
+
+
+if(bridge_state == Bridge_Idle) begin
 	if(condition1_state_Idle) begin
-		if ((axi_read_address_valid) && ((state == Idle) || (state == Access))) begin	//condition11_state_Idle
+		if ((s_axi_arvalid) && ((state == Idle) || (state == Access))) begin	//condition11_state_Idle
 			bridge_state         <= axi_read;
 			captured_addr        <= s_axi_araddr;
 			axi_write_data_reg   <= 32'h00000000;
@@ -293,11 +313,11 @@ Bridge_Idle:
 	read_data_reg        <= 32'h00000000;
 	read_resp            <= read_resp;
 	write_resp           <= write_resp;
-
-axi_read:
+end
+if(bridge_state == axi_read) begin
 	if (condition1_state_axi_read)begin 				//condition1_state_axi_read
 		if (s_axi_rready) begin  				//condition11_state_axi_read
-			if (axi_read_address_valid)  begin			//condition111_state_axi_read
+			if (s_axi_arvalid)  begin			//condition111_state_axi_read
 				bridge_state         <= axi_read;
 				captured_addr        <= s_axi_araddr;
 				axi_write_data_reg   <= 32'h00000000;
@@ -326,14 +346,14 @@ axi_read:
 		
 		end
 		else begin						//condition12_state_axi_read
-			bridge_state         <= axi_read_response_send_wait;
+			bridge_state         <= axi_read_response_wait;
 			captured_addr        <= 32'h00000000;
 			axi_write_data_reg   <= 32'h00000000;
 			write_req_reg        <= 1'b0;
 		end
 		read_valid_reg       <= 1'b1;
 		read_data_reg  	     <= sel_m_apb_prdata;
-		read_resp            <= slave_resp;
+		read_resp            <= |m_apb_pslverr;
 
 	end
 	else if (condition2_state_axi_read) begin
@@ -357,16 +377,9 @@ axi_read:
 	write_happened       <= 1'b0;
 	write_resp_valid_reg <= 1'b0;
 	write_resp           <= write_resp;
-
-axi_write:
-	if ((state == Access) && (|m_apb_pready))
-
-
-reg[1:0]  read_resp ;
-reg[1:0]  ;
-
-
-			
+end
+if(bridge_state == axi_write) begin
+	if ((state == Access) && (|m_apb_pready))	
 		To DO:
 			capture_write_data_response
 			assert write valid response
@@ -379,7 +392,7 @@ reg[1:0]  ;
 		write_resp_valid_reg <= 1'b0;
 		read_data_reg        <= 32'h00000000;
 		captured_addr        <= 32'h00000000;
-		write_resp           <= slave_write_resp;
+		write_resp           <= |m_apb_pslverr;;
 
 	else if ((state == Access) && (!|m_apb_pready))
 		if(wait_counter<max_count)
@@ -395,9 +408,8 @@ reg[1:0]  ;
 	read_valid_reg  <= 1'b0;
 	read_data_reg   <= 32'h00000000;
 	write_happened  <= 1'b1;
-
-
-axi_write_data_wait:
+end
+if(bridge_state == axi_write_data_wait) begin
 	if(s_axi_wvalid)
 		bridge_state = axi_write;
 		To Do:
@@ -407,40 +419,45 @@ axi_write_data_wait:
 
 	read_valid_reg  <= 1'b0;
 	read_data_reg   <= 32'h00000000;
-
-axi_write_address_wait:
-	if(s_axi_wvalid)
+end
+if(bridge_state == axi_write_address_wait) begin
+	if(s_axi_awvalid)
 		bridge_state = axi_write;
 		To Do:
 			capture write address
 	else:
 		bridge_state = axi_write_address_wait;
-
-axi_read_response_send_wait:
+end
+if(bridge_state == axi_read_response_wait) begin
 	if (s_axi_rready)
-		if ((s_axi_awvalid) && (s_axi_wvalid))
+		if (s_axi_arvalid)  begin			//condition111_state_axi_read
+			bridge_state         <= axi_read;
+			captured_addr        <= s_axi_araddr;
+			axi_write_data_reg   <= 32'h00000000;
+			write_req_reg        <= 1'b0;	
+		end
+		else if ((s_axi_awvalid) && (s_axi_wvalid))
 				bridge_state = axi_write		
 			To DO:
 				capture address
 				capture data
 				initiate transfer on apb master
 
-		elseif ((s_axi_awvalid) && (!s_axi_wvalid))
+		else if ((s_axi_awvalid) && (!s_axi_wvalid))
 				bridge_state = axi_write_data_wait				
 			To DO:
-				capture address
-				
+				capture address	
 
-		elseif ((!s_axi_awvalid) && (s_axi_wvalid))
+		else if ((!s_axi_awvalid) && (s_axi_wvalid))
 				bridge_state = axi_write_address_wait				
 		To DO:
 			send read data response
 			send read data back to axi master
 			assert read valid signal
 	else 
-		bridge_state = axi_read_response_send_wait
+		bridge_state = axi_read_response_wait
 
 	read_valid_reg  <= 1'b1;
 	read_data_reg <= read_data_reg;
-
+end
 endmodule
