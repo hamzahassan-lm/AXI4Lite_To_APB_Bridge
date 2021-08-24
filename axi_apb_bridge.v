@@ -334,12 +334,8 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 			axi_write_data_reg   <= 32'h00000000;
 			write_happened       <= 1'b1;
 			bridge_state         <= Bridge_Idle;
-			write_req_reg        <= 1'b0;
-			read_valid_reg       <= 1'b0;
-			write_resp_valid_reg <= 1'b0;
-			read_data_reg        <= 32'h00000000;
-			captured_addr        <= 32'h00000000;
-			write_resp           <= |m_apb_pslverr;;
+			write_resp           <= |m_apb_pslverr;
+			write_resp_valid_reg <= 1'b1;
 		end
 		else if ((state == Access) && (!|m_apb_pready)) begin
 			if(timeout_counter < timeout_val) begin
@@ -348,19 +344,17 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 			else begin
 				bridge_state <= Bridge_Idle;
 				write_resp   <= 2'b10;
+				write_resp_valid_reg <= 1'b1;
 			end
 		end
 		else if (state == Idle) begin
 			bridge_state         <= Bridge_Idle;
-			captured_addr        <= 32'h00000000;
-			axi_write_data_reg   <= 32'h00000000;
-			write_req_reg        <= 1'b0;
-			read_valid_reg       <= 1'b0;
-			read_data_reg        <= 32'h00000000;
 		end
-
+		captured_addr   <= captured_addr;
+		write_req_reg   <= 1'b0;
 		read_valid_reg  <= 1'b0;
 		read_data_reg   <= 32'h00000000;
+		read_valid_reg  <= 1'b0;
 		write_happened  <= 1'b1;
 
 	end
