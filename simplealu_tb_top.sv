@@ -43,12 +43,17 @@ simple_alu dut(vif.clk       ,
 logic areset_n;
 logic start_read;
 logic start_write;
+logic[31:0] write_data= 10;
+logic[31:0] read_data ;
+logic[31:0] write_read_address = 4;
 axi_lite_master axi_lite_master_DUT(
 	vif.clk,
 	areset_n,
 	axi_lite_master_vif.master,
 	start_read,
-	start_write
+	start_write,
+	write_data,
+	write_read_address
 );
 
 
@@ -142,16 +147,18 @@ APB_Slave apb_slave
                          m_apb_psel[0],
         		 m_apb_pwdata,
         		 m_apb_prdata,
-                         m_apb_pready[0]
-);
+                         m_apb_pready[0],
+			 m_apb_pslverr[0]
+);			
 			       
 
 initial begin
  //   uvm_config_db #(virtual simplealu_if)::set(.scope("ifs"), .name("simplealu_if"), .val(vif));
     uvm_config_db#(virtual simplealu_if)::set(null,"*","simplealu_vif",vif);  //set method
-
     run_test();
 end
+
+
 
 initial begin
     vif.clk  = 1'b1;
@@ -162,15 +169,65 @@ initial begin
     areset_n = 1'b0; 
     #30;  
     areset_n = 1'b1; 
-    start_write = 1'b1;
-    start_read  = 1'b0;
-    #30;
-    start_write = 1'b0;
-    start_read  = 1'b1;
-    #30;
-    start_write = 1'b0;
-    start_read  = 1'b0;
 end
+
+typedef enum logic [3 : 0] {start, write_data_state, write_resp, read_data_state, read_resp, match,finish} test_state;
+
+test_state test_state_ = start;
+int repetetions = 0;
+
+
+   always @(posedge vif.clk) begin
+	if(test_state_ == start) begin
+		test_state_ <= write_data_state;
+	end
+	else if(test_state_ == write_data_state) begin
+		test_state_ <= write_resp;
+		write(repetetions,repetetions);
+	end
+	else if(test_state_ == write_resp) begin
+		if(axi_lite_master_vif.s_axi_bvalid) test_state_ <= read_data_state;
+		else test_state_ <= write_resp;
+	end
+	else if(test_state_ == read_data_state) begin
+		test_state_ <= read_resp;
+		read(repetetions);
+	end
+	else if(test_state_ == read_resp) begin
+		if(axi_lite_master_vif.s_axi_rvalid)  begin
+				test_state_ <= match;
+				read_data   = axi_lite_master_vif.s_axi_rdata;
+		end
+		else test_state_ <= read_resp;
+	end
+	else if(test_state_ == match) begin
+		if(repetetions >= 20)  test_state_ <= finish;
+		else begin
+			repetetions <= repetetions + 1;
+			test_state_ <= start;
+			if(read_data != write_data) $display("test fail");
+			else 			    $display("test pass");
+		end
+		
+	end
+	else	test_state_ <= finish;
+   end
+
+
+task write(int data, int address);
+        start_write = 1;
+  	start_read  = 0;
+	write_data  = data;
+    	write_read_address  = address;
+endtask: write 
+
+task read(int address);
+        start_write = 0;
+  	start_read  = 1;
+    	write_read_address    = address;
+
+endtask: read
+
 initial begin 
 	$dumpfile("waves.vcd");
 	$dumpvars();

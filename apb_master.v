@@ -55,50 +55,41 @@ parameter Setup  = 'd 1;
 parameter Access = 'd 2;
 
 reg[1:0]  state;
-wire[1:0]  nstate;
-wire[1:0] nst_int1;
-wire[1:0] nst_int3;
 
 always @ (posedge PCLK)
 begin
-    if (!PRESETn)
-        state <= Idle;
-    else
-        state <= nstate;
+	if (!PRESETn)
+	state <= Idle;
+	if (state == Idle)
+	begin
+		if (STREQ)
+		  state <= Setup;
+		else
+		  state <= Idle;
+	end
+	else if (state == Setup)
+		state <= Access;
+	else if (state == Access)
+	begin
+		if (PREADY && STREQ)
+		  state <= Setup;
+		else if (PREADY && ~STREQ)
+		  state <= Idle;
+		else if (~PREADY)
+		  state <= Access;
+		else
+		  state <= Idle;   
+	end
+	else state <= Idle;
+
 end 
+
+
 /*
-always @(*)		
-begin
-  if (state == Idle)
-    begin
-	if (STREQ)
-	  nstate = Setup;
-	else
-          nstate = Idle;
-    end
-  else if (state == Setup)
-    nstate = Access;
-
-  else if (state == Access)
-    begin
-	if (PREADY && STREQ)
-	  nstate = Setup;
-	else if (PREADY && ~STREQ)
-          nstate = Idle;
-	else if (~PREADY)
-          nstate = Access;
-	else
-          nstate = Idle;   
-    end
-   else nstate = Idle;
-
-end
-*/
-
 assign nst_int1 = STREQ ? Setup : Idle;
 assign nst_int3  = |PREADY && STREQ ? Setup : |PREADY && ~STREQ ? Idle :~|PREADY ? Access : Idle;
 assign nstate  = (state == Idle) ? nst_int1 : (state == Setup) ? Access : (state == Access) ? nst_int3 : Idle;
-
+*/
 //assign PSELx   = (state == Idle)   ? 1'b0 : 1'b1;
 assign PENABLE = (state == Access) ? 1'b1 : 1'b0;
 assign PWRITE  = SWRT;
@@ -106,7 +97,6 @@ assign PSELx   = SSEL;
 
 
 assign PADDR = SADDR;
-
 assign PWDATA = SWDATA;
 assign SRDATA = PRDATA;
 assign Out_State = state;
