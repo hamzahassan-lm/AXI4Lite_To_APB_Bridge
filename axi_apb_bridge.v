@@ -174,16 +174,16 @@ wire condition3_state_axi_write = (bridge_state == axi_write) & (state == Setup)
 
 wire condition22_state_axi_write = condition2_state_axi_write & (timeout_counter == 32'h00000000) ;
 
-wire condition1_state_axi_read_response_wait  = (bridge_state == axi_read_response_wait) & (s_axi_rready);
-wire condition2_state_axi_read_response_wait  = (bridge_state == axi_read_response_wait) & (!s_axi_rready);
+wire condition1_state_axi_read_response_wait   = (bridge_state == axi_read_response_wait) & (s_axi_rready);
+wire condition2_state_axi_read_response_wait   = (bridge_state == axi_read_response_wait) & (!s_axi_rready);
 wire condition11_state_axi_read_response_wait  = condition1_state_axi_read_response_wait & (s_axi_arvalid);
 wire condition12_state_axi_read_response_wait  = condition1_state_axi_read_response_wait & ((s_axi_awvalid) && (s_axi_wvalid));
 wire condition13_state_axi_read_response_wait  = condition1_state_axi_read_response_wait & ((s_axi_awvalid) && (!s_axi_wvalid));
 wire condition14_state_axi_read_response_wait  = condition1_state_axi_read_response_wait & ((!s_axi_awvalid) && (s_axi_wvalid));
 
 
-wire condition1_state_axi_write_address_wait  = (bridge_state == axi_write_address_wait) & (s_axi_awvalid);
-wire condition2_state_axi_write_address_wait  = (bridge_state == axi_write_address_wait) & (!s_axi_awvalid);
+wire condition1_state_axi_write_address_wait   = (bridge_state == axi_write_address_wait) & (s_axi_awvalid);
+wire condition2_state_axi_write_address_wait   = (bridge_state == axi_write_address_wait) & (!s_axi_awvalid);
 
 wire condition1_state_axi_write_data_wait  = (bridge_state == axi_write_data_wait) & (s_axi_wvalid);
 wire condition2_state_axi_write_data_wait  = (bridge_state == axi_write_data_wait) & (!s_axi_wvalid);
@@ -216,32 +216,32 @@ assign s_axi_wready     = condition12_state_Idle | condition13_state_Idle |
 
 
 
-assign write_req                = (bridge_state == axi_write) | condition2_state_Idle | ((bridge_state == Bridge_Idle) & (write_happened && s_axi_bready)) ;
+assign write_req        = (bridge_state == axi_write) | condition2_state_Idle | ((bridge_state == Bridge_Idle) & (write_happened && s_axi_bready)) ;
 
-assign read_valid_nxt	      = ((state == Access) & |(m_apb_psel & m_apb_pready) & !write_req)| (condition2_state_axi_read_response_wait) | 
+assign read_valid_nxt	= ((state == Access) & |(m_apb_psel & m_apb_pready) & !write_req)| (condition2_state_axi_read_response_wait) | 
 				(condition22_state_axi_read) ;
 
-assign read_resp_nxt            = condition1_state_axi_read ? {|(m_apb_psel&m_apb_pslverr),1'b0} :
+assign read_resp_nxt    = condition1_state_axi_read ? {|(m_apb_psel&m_apb_pslverr),1'b0} :
 				condition22_state_axi_read ? 2'b10 :
 				condition2_state_axi_read_response_wait ? read_resp : 2'b00;
 
-assign read_data_nxt      = ((state == Access) & |(m_apb_psel & m_apb_pready) & !write_req) ? sel_m_apb_prdata :
+assign read_data_nxt    = ((state == Access) & |(m_apb_psel & m_apb_pready) & !write_req) ? sel_m_apb_prdata :
 				condition22_state_axi_read ? 32'h00000000 : 
 			        (condition2_state_axi_read_response_wait) ? read_data_reg : 32'h00000000;	 		  
 
-assign axi_write_data_nxt = condition12_state_Idle                   | condition13_state_Idle |
+assign axi_write_data_nxt  = condition12_state_Idle                   | condition13_state_Idle |
 				condition112_state_axi_read              | condition114_state_axi_read |
 				condition1_state_axi_write_data_wait     | condition12_state_axi_read_response_wait |
 				condition14_state_axi_read_response_wait  
 			 	? s_axi_wdata : (bridge_state == axi_write_address_wait) | condition2_state_axi_write |condition3_state_axi_write
 			        ? axi_write_data_reg : 32'h00000000;
 
-assign write_resp_valid_nxt     = condition2_state_Idle | condition1_state_axi_write | condition22_state_axi_write ;
+assign write_resp_valid_nxt= condition2_state_Idle | condition1_state_axi_write | condition22_state_axi_write ;
 assign write_resp_nxt 	   = condition1_state_axi_write  ? {|(m_apb_psel&m_apb_pslverr),1'b0} :
 				     condition22_state_axi_write ? 2'b10 :
 				     condition2_state_Idle ? write_resp  : 2'b00;
 
-assign captured_addr_nxt  = condition11_state_Idle | condition111_state_axi_read | condition11_state_axi_read_response_wait ? s_axi_araddr :
+assign captured_addr_nxt   = condition11_state_Idle | condition111_state_axi_read | condition11_state_axi_read_response_wait ? s_axi_araddr :
 				condition12_state_Idle | condition14_state_Idle | condition112_state_axi_read | condition113_state_axi_read |
 				condition1_state_axi_write_address_wait | condition12_state_axi_read_response_wait
 				| condition13_state_axi_read_response_wait ? s_axi_awaddr : condition2_state_axi_read | condition3_state_axi_read |
@@ -251,7 +251,7 @@ assign timeout_counter_nxt = (condition2_state_axi_read | condition2_state_axi_w
 				 timeout_counter-1 : condition3_state_Idle | condition1_state_axi_read | condition1_state_axi_write ?
 				 timeout_val       : timeout_counter;
 		
-assign write_happened_nxt        = (!s_axi_aresetn) ? 1'b0 : (bridge_state == axi_write) ? 1'b1 : condition2_state_Idle ? write_happened : 1'b0;
+assign write_happened_nxt  = (!s_axi_aresetn) ? 1'b0 : (bridge_state == axi_write) ? 1'b1 : condition2_state_Idle ? write_happened : 1'b0;
 
 
 
@@ -337,8 +337,6 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 		else bridge_state <= axi_read_response_wait;
 	end
 end
-
-wire[31:0] dummy  = memory_regions2[31:0];
 
 genvar i;
 /*
