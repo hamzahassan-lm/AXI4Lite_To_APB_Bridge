@@ -4,8 +4,6 @@ import axi_lite_pkg::*;
 `include "uvm_macros.svh"
 `include "simple_alu.v"
 
-`include "flop.v"
-`include "apb_master.v"
 `include "axi_apb_bridge.v"
 `include "APB_Slave.v"
 
@@ -57,7 +55,7 @@ axi_lite_master axi_lite_master_DUT(
 );
 
 
-localparam c_apb_num_slaves = 1;
+localparam c_apb_num_slaves = 3;
 localparam ADDRWIDTH        = 32;
 localparam DATAWIDTH        = 32;
 
@@ -89,7 +87,15 @@ wire    [31:0]                  m_apb_prdata15;
 wire    [31:0]                  m_apb_prdata16;
 wire    [c_apb_num_slaves-1:0]  m_apb_pslverr;
 
-axi_apb_bridge bridge(        
+parameter [32*c_apb_num_slaves-1 : 0]  memory_regions1  = 32'h0+64'h0000004000000000+96'h000000800000000000000000;
+parameter [32*c_apb_num_slaves-1 : 0]  memory_regions2  = 32'h3f+64'h0000007F00000000+96'h000000C00000000000000000;
+
+axi_apb_bridge #(.c_apb_num_slaves(c_apb_num_slaves),
+		.memory_regions1(memory_regions1),
+		.memory_regions2(memory_regions2)
+		)
+
+		bridge(        
 			vif.clk,
 			areset_n,
 			axi_lite_master_vif.s_axi_awaddr,
@@ -109,6 +115,8 @@ axi_apb_bridge bridge(
 			axi_lite_master_vif.s_axi_rvalid,
 			axi_lite_master_vif.s_axi_rdata,
 			axi_lite_master_vif.s_axi_rready,
+			axi_lite_master_vif.s_axi_arprot,
+			axi_lite_master_vif.s_axi_awprot,			
 
 			m_apb_paddr,
 			m_apb_pprot,
@@ -138,7 +146,13 @@ axi_apb_bridge bridge(
 		);
 
 
-APB_Slave apb_slave
+
+APB_Slave
+#(.Start_Addr(memory_regions1[31:0]),
+  .End_Addr(memory_regions2[31:0])
+  )
+
+apb_slave
 (
                          vif.clk,
                          areset_n,
@@ -150,7 +164,41 @@ APB_Slave apb_slave
                          m_apb_pready[0],
 			 m_apb_pslverr[0]
 );			
-			       
+
+APB_Slave
+#(.Start_Addr(memory_regions1[32*2-1:32*1]),
+  .End_Addr(memory_regions2[32*2-1:32*1])
+  )
+
+apb_slave2
+(
+                         vif.clk,
+                         areset_n,
+        		 m_apb_paddr,
+                         m_apb_pwrite,
+                         m_apb_psel[1],
+        		 m_apb_pwdata,
+        		 m_apb_prdata2,
+                         m_apb_pready[1],
+			 m_apb_pslverr[1]
+);		       
+
+APB_Slave
+#(.Start_Addr(memory_regions1[32*3-1:32*2]),
+  .End_Addr(memory_regions2[32*3-1:32*2])
+  )
+apb_slave3
+(
+                         vif.clk,
+                         areset_n,
+        		 m_apb_paddr,
+                         m_apb_pwrite,
+                         m_apb_psel[2],
+        		 m_apb_pwdata,
+        		 m_apb_prdata3,
+                         m_apb_pready[2],
+			 m_apb_pslverr[2]
+);
 
 initial begin
  //   uvm_config_db #(virtual simplealu_if)::set(.scope("ifs"), .name("simplealu_if"), .val(vif));
@@ -175,23 +223,32 @@ typedef enum logic [3 : 0] {start, write_data_state, write_resp, read_data_state
 
 test_state test_state_ = start;
 int repetetions = 0;
+int slave_no    = 1;
 
 
    always @(posedge vif.clk) begin
 	if(test_state_ == start) begin
 		test_state_ <= write_data_state;
+				
+		if(slave_no>=2) slave_no = 1;
+		else		slave_no += 1;
+		
+		
 	end
 	else if(test_state_ == write_data_state) begin
 		test_state_ <= write_resp;
-		write(repetetions,repetetions);
+		write(repetetions,repetetions+memory_regions1[32*3-1:32*2]);
+		
 	end
 	else if(test_state_ == write_resp) begin
 		if(axi_lite_master_vif.s_axi_bvalid) test_state_ <= read_data_state;
 		else test_state_ <= write_resp;
 	end
 	else if(test_state_ == read_data_state) begin
-		test_state_ <= read_resp;
-		read(repetetions);
+		test_state_ <= read_resp;  
+		read(repetetions+memory_regions1[32*3-1:32*2]);
+
+		
 	end
 	else if(test_state_ == read_resp) begin
 		if(axi_lite_master_vif.s_axi_rvalid)  begin

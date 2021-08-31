@@ -11,44 +11,44 @@ module apb_master
 	);
 
 
-input       PCLK;
-input       PRESETn;
+input       			   PCLK;
+input       			   PRESETn;
 
-input	     STREQ;
-input	     SWRT;
-input 	     SSEL;
-input[31:0]  SADDR;
-input[31:0]  SWDATA;
-output[31:0] SRDATA;
+input	     			   STREQ;
+input	     			   SWRT;
+input[c_apb_num_slaves-1:0] 	   SSEL;
+input[31:0]  			   SADDR;
+input[31:0]  			   SWDATA;
+output[31:0] 			   SRDATA;
 
-output[31:0] PADDR;
-output[2:0]  PPROT;
-output       PSELx;
-output	     PENABLE;
-output       PWRITE;
-output[31:0] PWDATA;
-output[3:0]  PSTRB;
+output[31:0] 			   PADDR;
+output[2:0]  			   PPROT;
+output[c_apb_num_slaves-1:0] 	   PSELx;
+output	     			   PENABLE;
+output       			   PWRITE;
+output[31:0] 			   PWDATA;
+output[3:0]  			   PSTRB;
 
-input[c_apb_num_slaves-1:0] PREADY;
-input[31:0]  PRDATA;
-input[31:0] m_apb_prdata2;
-input[31:0] m_apb_prdata3;
-input[31:0] m_apb_prdata4;
-input[31:0] m_apb_prdata5;
-input[31:0] m_apb_prdata6;
-input[31:0] m_apb_prdata7;
-input[31:0] m_apb_prdata8;
-input[31:0] m_apb_prdata9;
-input[31:0] m_apb_prdata10;
-input[31:0] m_apb_prdata11;
-input[31:0] m_apb_prdata12;
-input[31:0] m_apb_prdata13;
-input[31:0] m_apb_prdata14;
-input[31:0] m_apb_prdata15;
-input[31:0] m_apb_prdata16;
-input        PSLVERR;
+input[c_apb_num_slaves-1:0] 	   PREADY;
+input[31:0]  			   PRDATA;
+input[31:0] 			   m_apb_prdata2;
+input[31:0] 			   m_apb_prdata3;
+input[31:0] 			   m_apb_prdata4;
+input[31:0] 			   m_apb_prdata5;
+input[31:0] 			   m_apb_prdata6;
+input[31:0] 			   m_apb_prdata7;
+input[31:0] 			   m_apb_prdata8;
+input[31:0] 			   m_apb_prdata9;
+input[31:0] 			   m_apb_prdata10;
+input[31:0] 			   m_apb_prdata11;
+input[31:0] 			   m_apb_prdata12;
+input[31:0] 			   m_apb_prdata13;
+input[31:0] 			   m_apb_prdata14;
+input[31:0] 			   m_apb_prdata15;
+input[31:0] 			   m_apb_prdata16;
+input[c_apb_num_slaves-1:0]        PSLVERR;
 
-output[1:0]  Out_State;
+output[1:0]  			   Out_State;
 
 parameter Idle   = 'd 0;
 parameter Setup  = 'd 1;
@@ -84,13 +84,6 @@ begin
 
 end 
 
-
-/*
-assign nst_int1 = STREQ ? Setup : Idle;
-assign nst_int3  = |PREADY && STREQ ? Setup : |PREADY && ~STREQ ? Idle :~|PREADY ? Access : Idle;
-assign nstate  = (state == Idle) ? nst_int1 : (state == Setup) ? Access : (state == Access) ? nst_int3 : Idle;
-*/
-//assign PSELx   = (state == Idle)   ? 1'b0 : 1'b1;
 assign PENABLE = (state == Access) ? 1'b1 : 1'b0;
 assign PWRITE  = SWRT;
 assign PSELx   = SSEL;

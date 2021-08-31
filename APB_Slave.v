@@ -5,6 +5,8 @@
 `define W_ENABLE  2'b01
 `define R_ENABLE  2'b10
 module APB_Slave
+#(parameter [31:0] Start_Addr = 32'd0 ,
+  parameter [31:0] End_Addr   = 32'd64 )
 (
   input                         PCLK,
   input                         PRESETn,
@@ -12,26 +14,28 @@ module APB_Slave
   input                         PWRITE,
   input                         PSEL,
   input        [`DATAWIDTH-1:0] PWDATA,
-  output wire   [`DATAWIDTH-1:0] PRDATA,
+  output reg   [`DATAWIDTH-1:0] PRDATA,
   output reg                    PREADY,
-  output wire			PSLVERR
+  output wire                   SLVERR
 );
 
-reg [`DATAWIDTH-1:0] RAM [63:0];
-
+reg [`DATAWIDTH-1:0] RAM [0:63];
+wire[`ADDRWIDTH-1:0] mod_addr;
 reg [1:0] State;
 
 
 
-always @(negedge PRESETn or posedge PCLK) begin
+always @(negedge PRESETn or negedge PCLK) begin
   if (PRESETn == 0) begin
     State <= `IDLE;
+    PRDATA <= 0;
     PREADY <= 0;
     end
 
   else begin
     case (State)
       `IDLE : begin
+        PRDATA <= 0;
         if (PSEL) begin
           if (PWRITE) begin
             State <= `W_ENABLE;
@@ -44,7 +48,7 @@ always @(negedge PRESETn or posedge PCLK) begin
 
       `W_ENABLE : begin
         if (PSEL && PWRITE) begin
-          RAM[PADDR]  <= PWDATA;
+          RAM[mod_addr]  <= PWDATA;
           PREADY <=1;          
         end
           State <= `IDLE;
@@ -53,7 +57,7 @@ always @(negedge PRESETn or posedge PCLK) begin
       `R_ENABLE : begin
         if (PSEL && !PWRITE) begin
           PREADY <= 1;
-          
+          PRDATA <= RAM[mod_addr];
         end
         State <= `IDLE;
       end
@@ -63,6 +67,8 @@ always @(negedge PRESETn or posedge PCLK) begin
     endcase
   end
 end 
-assign PRDATA = (State == `R_ENABLE) & (PSEL && !PWRITE) ? RAM[PADDR] : 32'h00000000;
-assign PSLVERR = 1'b0;
+assign mod_addr = PADDR - Start_Addr;
+
+assign SLVERR = 1'b0;
+
 endmodule

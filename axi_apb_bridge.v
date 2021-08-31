@@ -1,12 +1,13 @@
-//import axi_lite_pkg::*;
+`include "apb_master.v"
+`include "flop.v"
+
 module axi_apb_bridge
 	#(parameter c_apb_num_slaves = 1,
-	  parameter Base_Address   = 32'h00000000,
-	  parameter memory_size    = 1024,
-	  parameter integer  memory_regions1 [c_apb_num_slaves-1 : 0] = {32'h00000000},
-	  parameter integer  memory_regions2 [c_apb_num_slaves-1 : 0] = {32'h00000040},
-	  parameter timeout_val       = 10,
-      parameter division       = memory_size/c_apb_num_slaves)
+	  parameter [32*c_apb_num_slaves-1 : 0] memory_regions1 = 0,
+	  parameter [32*c_apb_num_slaves-1 : 0] memory_regions2  = 64,
+	  parameter timeout_val       = 1,
+	  parameter APB_Protocol      = 3,
+	)
 	(
 		input                         s_axi_clk,
 		input                         s_axi_aresetn,
@@ -27,6 +28,10 @@ module axi_apb_bridge
 		output                        s_axi_rvalid,
 		output [31:0]                 s_axi_rdata,
 		input                         s_axi_rready,
+
+		input  [2:0]                  s_axi_arprot,
+		input  [2:0]                  s_axi_awprot,
+
 		output [31:0]                 m_apb_paddr,
 		output [2:0]                  m_apb_pprot,
 		output [c_apb_num_slaves-1:0] m_apb_psel,
@@ -66,17 +71,56 @@ localparam axi_write_address_wait   = 'd 4;
 localparam axi_read_response_wait   = 'd 5;
 
 
-reg[31:0] axi_write_data_reg;
-reg       write_happened;
-reg[2:0]  bridge_state;
-reg       read_valid_reg;
-reg       write_resp_valid_reg;
-reg[31:0] read_data_reg;
-reg[31:0] captured_addr;
-reg[1:0]  read_resp ;
-reg[1:0]  write_resp;
-reg  [31:0] timeout_counter;
+wire[31:0] axi_write_data_reg;
+wire[31:0] axi_write_data_reg_nxt;
 
+flop#(.width(32))
+ axi_write_data_ff(s_axi_clk,s_axi_aresetn,axi_write_data_nxt,axi_write_data_reg);
+
+wire       write_happened;
+wire       write_happened_nxt;
+flop#(.width(1))
+ write_happened_ff(s_axi_clk,s_axi_aresetn,write_happened_nxt,write_happened);
+
+wire       read_valid_reg;
+wire	   read_valid_nxt;
+flop#(.width(1))
+ read_valid_ff(s_axi_clk,s_axi_aresetn,read_valid_nxt,read_valid_reg);
+
+wire       write_resp_valid_reg;
+wire	   write_resp_valid_nxt;
+flop#(.width(1))
+ write_resp_valid_ff(s_axi_clk,s_axi_aresetn,write_resp_valid_nxt,write_resp_valid_reg);
+
+wire[31:0] read_data_reg;
+wire[31:0] read_data_nxt;
+flop#(.width(32))
+ read_data_ff(s_axi_clk,s_axi_aresetn,read_data_nxt,read_data_reg);
+
+
+wire[31:0] captured_addr;
+wire[31:0] captured_addr_nxt;
+flop#(.width(32))
+ captured_addr_ff(s_axi_clk,s_axi_aresetn,captured_addr_nxt,captured_addr);
+
+wire[1:0] read_resp;
+wire[1:0] read_resp_nxt;
+flop#(.width(2))
+ read_resp_ff(s_axi_clk,s_axi_aresetn,read_resp_nxt,read_resp);
+
+wire[1:0] write_resp;
+wire[1:0] write_resp_nxt;
+flop#(.width(2))
+ write_resp_ff(s_axi_clk,s_axi_aresetn,write_resp_nxt,write_resp);
+
+wire[31:0] timeout_counter;
+wire[31:0] timeout_counter_nxt;
+flop#(.width(32))
+ timeout_counter_ff(s_axi_clk,s_axi_aresetn,timeout_counter_nxt,timeout_counter);
+
+
+
+reg[2:0]  bridge_state;
 wire      apb_transfer_req;
 
 wire [1:0] strb = s_axi_wstrb;
@@ -87,16 +131,15 @@ wire [31:0]                 SWDATA;
 wire [31:0]                 SRDATA;
 wire [31:0]                 sel_m_apb_prdata;
 wire [31:0]                 SADDR;
+wire                        apb_reset;
+wire                        STREQ;
 
-
-apb_master UUT (s_axi_clk, apb_reset, STREQ, SWRT, SSEL,SADDR,SWDATA,SRDATA, m_apb_paddr, m_apb_pprot, m_apb_psel, m_apb_penable,
+apb_master #(.c_apb_num_slaves(c_apb_num_slaves))
+		UUT (s_axi_clk, apb_reset, STREQ, SWRT, SSEL,SADDR,SWDATA,SRDATA, m_apb_paddr, m_apb_pprot, m_apb_psel, m_apb_penable,
                 m_apb_pwrite, m_apb_pwdata, m_apb_pstrb, m_apb_pready, m_apb_prdata, m_apb_pslverr, m_apb_prdata2, m_apb_prdata3,
                 m_apb_prdata4, m_apb_prdata5, m_apb_prdata6, m_apb_prdata7, m_apb_prdata8, m_apb_prdata9, m_apb_prdata10,
                 m_apb_prdata11, m_apb_prdata12, m_apb_prdata13, m_apb_prdata14, m_apb_prdata15, m_apb_prdata16, state);
 
-
-
-assign apb_reset        = (state == Access) && timeout_counter^32'h00000000 ? 0 : s_axi_aresetn;
 
 
 wire condition1_state_Idle  = (bridge_state == Bridge_Idle) & ((write_happened && s_axi_bready)||(!write_happened));
@@ -116,6 +159,8 @@ wire condition4_state_axi_read  = (bridge_state == axi_read) & (state == Idle);
 wire condition11_state_axi_read = condition1_state_axi_read & (s_axi_rready);
 wire condition12_state_axi_read = condition1_state_axi_read & !(s_axi_rready);
 
+wire condition22_state_axi_read = condition2_state_axi_read & (timeout_counter == 32'h00000000) ;
+
 
 wire condition111_state_axi_read = condition11_state_axi_read & (s_axi_arvalid);
 wire condition112_state_axi_read = condition11_state_axi_read & ((s_axi_awvalid) && (s_axi_wvalid));
@@ -125,6 +170,8 @@ wire condition114_state_axi_read = condition11_state_axi_read & ((!s_axi_awvalid
 wire condition1_state_axi_write = (bridge_state == axi_write) & ((state == Access) & (|(m_apb_psel & m_apb_pready)));
 wire condition2_state_axi_write = (bridge_state == axi_write) & ((state == Access) & !(|(m_apb_psel & m_apb_pready)));
 wire condition3_state_axi_write = (bridge_state == axi_write) & (state == Setup);
+
+wire condition22_state_axi_write = condition2_state_axi_write & (timeout_counter == 32'h00000000) ;
 
 wire condition1_state_axi_read_response_wait  = (bridge_state == axi_read_response_wait) & (s_axi_rready);
 wire condition2_state_axi_read_response_wait  = (bridge_state == axi_read_response_wait) & (!s_axi_rready);
@@ -139,6 +186,11 @@ wire condition2_state_axi_write_address_wait  = (bridge_state == axi_write_addre
 
 wire condition1_state_axi_write_data_wait  = (bridge_state == axi_write_data_wait) & (s_axi_wvalid);
 wire condition2_state_axi_write_data_wait  = (bridge_state == axi_write_data_wait) & (!s_axi_wvalid);
+
+assign m_apb_pprot      = (APB_Protocol == 4) ? (bridge_state == axi_read) ? s_axi_arprot : (bridge_state == axi_write) ? s_axi_awprot : 3'b000 : 3'b000;
+			   
+
+assign apb_reset        = condition22_state_axi_read | condition22_state_axi_write ? 0 : s_axi_aresetn;
 
 
 assign apb_transfer_req = condition11_state_Idle                  | condition12_state_Idle |
@@ -162,33 +214,46 @@ assign s_axi_wready     = condition12_state_Idle | condition13_state_Idle |
  
 
 
-wire write_req                = (bridge_state == axi_write) | condition2_state_Idle | ((bridge_state == Bridge_Idle) & (write_happened && s_axi_bready)) ;
 
-wire read_valid_nxt	      = ((state == Access) & |(m_apb_psel & m_apb_pready) & !write_req)| (condition2_state_axi_read_response_wait);
-wire read_resp_nxt            = condition1_state_axi_read ? {|(m_apb_psel&m_apb_pslverr),1'b0} : 
+assign write_req                = (bridge_state == axi_write) | condition2_state_Idle | ((bridge_state == Bridge_Idle) & (write_happened && s_axi_bready)) ;
+
+assign read_valid_nxt	      = ((state == Access) & |(m_apb_psel & m_apb_pready) & !write_req)| (condition2_state_axi_read_response_wait) | 
+				(condition22_state_axi_read) ;
+
+assign read_resp_nxt            = condition1_state_axi_read ? {|(m_apb_psel&m_apb_pslverr),1'b0} :
+				condition22_state_axi_read ? 2'b10 :
 				condition2_state_axi_read_response_wait ? read_resp : 2'b00;
 
-wire[31:0] read_data_nxt      = ((state == Access) & |(m_apb_psel & m_apb_pready) & !write_req) ? sel_m_apb_prdata : 
+assign read_data_nxt      = ((state == Access) & |(m_apb_psel & m_apb_pready) & !write_req) ? sel_m_apb_prdata :
+				condition22_state_axi_read ? 32'h00000000 : 
 			        (condition2_state_axi_read_response_wait) ? read_data_reg : 32'h00000000;	 		  
 
-wire[31:0] axi_write_data_nxt = condition12_state_Idle                   | condition13_state_Idle |
+assign axi_write_data_nxt = condition12_state_Idle                   | condition13_state_Idle |
 				condition112_state_axi_read              | condition114_state_axi_read |
 				condition1_state_axi_write_data_wait     | condition12_state_axi_read_response_wait |
 				condition14_state_axi_read_response_wait  
 			 	? s_axi_wdata : (bridge_state == axi_write_address_wait) | condition2_state_axi_write |condition3_state_axi_write
 			        ? axi_write_data_reg : 32'h00000000;
 
-wire 	  write_resp_valid_nxt     = condition2_state_Idle | condition1_state_axi_write ;
-wire[1:0] write_resp_nxt 	   = condition1_state_axi_write ? {|(m_apb_psel&m_apb_pslverr),1'b0} : condition2_state_Idle ? write_resp : 2'b00;
+assign write_resp_valid_nxt     = condition2_state_Idle | condition1_state_axi_write | condition22_state_axi_write ;
+assign write_resp_nxt 	   = condition1_state_axi_write  ? {|(m_apb_psel&m_apb_pslverr),1'b0} :
+				     condition22_state_axi_write ? 2'b10 :
+				     condition2_state_Idle ? write_resp  : 2'b00;
 
-wire[31:0] captured_addr_nxt  = condition11_state_Idle | condition111_state_axi_read | condition11_state_axi_read_response_wait ? s_axi_araddr :
+assign captured_addr_nxt  = condition11_state_Idle | condition111_state_axi_read | condition11_state_axi_read_response_wait ? s_axi_araddr :
 				condition12_state_Idle | condition14_state_Idle | condition112_state_axi_read | condition113_state_axi_read |
 				condition1_state_axi_write_address_wait | condition12_state_axi_read_response_wait
 				| condition13_state_axi_read_response_wait ? s_axi_awaddr : condition2_state_axi_read | condition3_state_axi_read |
 				(bridge_state == axi_write) | (bridge_state == axi_write_data_wait ) ? captured_addr : 32'h00000000;
 
-				
-wire write_happened_nxt       = (!s_axi_aresetn) ? 1'b0 : (bridge_state == axi_write) ? 1'b1 : condition2_state_Idle ? write_happened : 1'b0;
+assign timeout_counter_nxt = (condition2_state_axi_read | condition2_state_axi_write) & (timeout_counter > 32'h00000000) ?
+				 timeout_counter-1 : condition3_state_Idle | condition1_state_axi_read | condition1_state_axi_write ?
+				 timeout_val       : timeout_counter;
+		
+assign write_happened_nxt        = (!s_axi_aresetn) ? 1'b0 : (bridge_state == axi_write) ? 1'b1 : condition2_state_Idle ? write_happened : 1'b0;
+
+
+
 
 assign s_axi_rdata      = read_data_reg;
 assign s_axi_bresp      = write_resp;
@@ -204,17 +269,8 @@ assign SWDATA           = axi_write_data_reg;
 
 always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 
-	read_valid_reg       <= read_valid_nxt;
-	read_data_reg        <= read_data_nxt;
-	axi_write_data_reg   <= axi_write_data_nxt;
-	captured_addr 	     <= captured_addr_nxt;
-	write_resp_valid_reg <= write_resp_valid_nxt;
-	write_resp     	     <= write_resp_nxt;
-	read_resp	     <= read_resp_nxt;
-	write_happened       <= write_happened_nxt;
 	if(!s_axi_aresetn) begin
 		bridge_state	    <= Bridge_Idle;
-		timeout_counter     <= 32'h00000000;
 	end
 	else if(bridge_state == Bridge_Idle)begin
 		if(condition1_state_Idle) begin
@@ -241,10 +297,9 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 			else bridge_state   <= axi_read_response_wait;
 		end
 		else if (condition2_state_axi_read) begin
-			if(timeout_counter < timeout_val) 		    bridge_state  <= axi_read;		
-			else begin
-				bridge_state    <= Bridge_Idle;	
-			end
+			if(timeout_counter > 32'h00000000) bridge_state  <= axi_read;		
+			else 				   bridge_state  <= axi_read_response_wait;	
+			
 		end
 		else if (state == Setup) bridge_state <= axi_read;
 		else if (state == Idle)  bridge_state <= Bridge_Idle;	
@@ -255,10 +310,9 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 
 		end
 		else if ((state == Access) && (!|(m_apb_psel & m_apb_pready))) begin
-			if(timeout_counter < timeout_val) bridge_state <= axi_write;
-			else begin
-				bridge_state <= Bridge_Idle;
-			end
+			if(timeout_counter > 32'h00000000) bridge_state <= axi_write;
+			else 				   bridge_state <= Bridge_Idle;
+			
 		end
 		else if (state == Setup) bridge_state <= axi_write;
 		else if (state == Idle)  bridge_state <= Bridge_Idle;
@@ -283,9 +337,16 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 	end
 end
 
+wire[31:0] dummy  = memory_regions2[31:0];
+
 genvar i;
+/*
 generate
-	for(i=0;i<c_apb_num_slaves;i=i+1) assign SSEL[i] = ((state == Access)|(state == Setup)) & (captured_addr >= memory_regions1[i]) ?  ((state == Access)|(state == Setup)) & (captured_addr <= memory_regions2[i]) ? 1'b1 : 1'b0 : 1'b0;
+	for(i=0;i<c_apb_num_slaves;i=i+1) assign SSEL[i] = (captured_addr >= memory_regions1[i]) & ((state == Access)|(state == Setup)) & (captured_addr <= memory_regions2[i]) ;
+endgenerate
+*/
+generate
+	for(i=32;i<=c_apb_num_slaves*32;i=i+32) assign SSEL[(i-32)/32] = (captured_addr >= memory_regions1[i-1:(i-32)]) & ((state == Access)|(state == Setup)) & (captured_addr <= memory_regions2[i-1:(i-32)]) ;
 endgenerate
 
 assign sel_m_apb_prdata = {32{(m_apb_psel == 16'h0001)}} & m_apb_prdata   |
