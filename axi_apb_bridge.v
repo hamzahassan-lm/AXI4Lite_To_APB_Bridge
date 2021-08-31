@@ -6,7 +6,7 @@ module axi_apb_bridge
 	  parameter [32*c_apb_num_slaves-1 : 0] memory_regions1 = 0,
 	  parameter [32*c_apb_num_slaves-1 : 0] memory_regions2  = 64,
 	  parameter timeout_val       = 1,
-	  parameter APB_Protocol      = 3,
+	  parameter APB_Protocol      = 3
 	)
 	(
 		input                         s_axi_clk,
@@ -72,7 +72,7 @@ localparam axi_read_response_wait   = 'd 5;
 
 
 wire[31:0] axi_write_data_reg;
-wire[31:0] axi_write_data_reg_nxt;
+wire[31:0] axi_write_data_nxt;
 
 flop#(.width(32))
  axi_write_data_ff(s_axi_clk,s_axi_aresetn,axi_write_data_nxt,axi_write_data_reg);
@@ -113,8 +113,9 @@ wire[1:0] write_resp_nxt;
 flop#(.width(2))
  write_resp_ff(s_axi_clk,s_axi_aresetn,write_resp_nxt,write_resp);
 
-wire[31:0] timeout_counter;
+reg[31:0] timeout_counter;
 wire[31:0] timeout_counter_nxt;
+
 flop#(.width(32))
  timeout_counter_ff(s_axi_clk,s_axi_aresetn,timeout_counter_nxt,timeout_counter);
 
