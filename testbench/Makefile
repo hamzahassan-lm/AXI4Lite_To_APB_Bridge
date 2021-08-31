@@ -18,7 +18,7 @@ SIMV = ./simv +UVM_VERBOSITY=$(UVM_VERBOSITY) \
 x:	comp run 
 
 comp:
-	$(VCS) +incdir+. simplealu_tb_top.sv
+	$(VCS) +incdir+. tb_top.sv
 
 run:
 	$(SIMV)

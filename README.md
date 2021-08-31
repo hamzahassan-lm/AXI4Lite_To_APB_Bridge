@@ -1,4 +1,3 @@
-# axi_apb_bridge
 # AXI4 Lite to APB3/APB4 Bridge
 The AXI Verification Component Library implements
 
@@ -12,26 +11,29 @@ run a simulation and see a live example
 	
 ### Building Depencencies
 Before building this project, you must build the following libraries in order
-  
-
-See the [OSVVM Verification Script Library](https://github.com/osvvm/OSVVM-Scripts) 
-for a simple way to build the OSVVM libraries.
 
 ### RTL
 Contains RTL for all the Modules used in the Design.
 
    * axi_lite_pkg.sv
-      * References all packages required to use the AXI4 verification components
+      * contains the structures and datatypes defined for axi_lite transactions
    * apb_master.v
-      * References all packages required to use the AXI4 verification components
+      * RTL for the APB master that is instantiated inside the bridge
    * flop.v
-      * References all packages required to use the AXI4 verification components
+      * RTL for a synchronous flop having active low reset that is for registers in the design
    * axi_apb_bridge.v
-      * References all packages required to use the AXI4 verification components
+      * The main module having all the logic of the bridge comprising of a state machine for AXI4_SLAVE 
    * APB_Slave.v
-      * References all packages required to use the AXI4 verification components
+      * APB slave for testing
    * axi_lite_if.sv
-      * References all packages required to use the AXI4 verification components
+      * AXI4 lite interface definitions for interconnect
    * axi_lite_master.sv
-      * References all packages required to use the AXI4 verification components
+      * AXI4 Lite master for testing purpose
 
+### testbench
+Contains the Test Bench which runs a sanity test on the Bridge 
+
+   * tb_top.sv
+      * The test bench having simple sanity test for testing the bridge including the instantiations of other additive modules for testing
+	which are not the part of the actual design. It also contains a state machine for the simple tests.
+   
