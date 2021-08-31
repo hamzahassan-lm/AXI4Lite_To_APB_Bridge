@@ -1,0 +1,9 @@
+simplealu_tb_top.bridge.Bridge_Idle0
+simplealu_tb_top.bridge.axi_read1
+simplealu_tb_top.bridge.axi_read_response_wait5
+simplealu_tb_top.bridge.axi_write2
+simplealu_tb_top.bridge.axi_write_address_wait4
+simplealu_tb_top.bridge.axi_write_data_wait3
+simplealu_tb_top.bridge.UUT.Access2
+simplealu_tb_top.bridge.UUT.Idle0
+simplealu_tb_top.bridge.UUT.Setup1

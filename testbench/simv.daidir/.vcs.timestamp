@@ -1,0 +1,570 @@
+288      
+0 uvm_pkg.sv
+0 /eda_tools/vcs201809/etc/systemverilog/uvm_pkg.sv
+0 uvm_macros.svh
+0 /eda_tools/vcs201809/etc/systemverilog/uvm_macros.svh
+0 macros/uvm_version_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_version_defines.svh
+0 macros/uvm_global_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_global_defines.svh
+0 macros/uvm_message_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_message_defines.svh
+0 macros/uvm_phase_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_phase_defines.svh
+0 macros/uvm_object_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_object_defines.svh
+0 macros/uvm_printer_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_printer_defines.svh
+0 macros/uvm_tlm_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_tlm_defines.svh
+0 tlm1/uvm_tlm_imps.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_tlm_imps.svh
+0 macros/uvm_sequence_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_sequence_defines.svh
+0 macros/uvm_callback_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_callback_defines.svh
+0 macros/uvm_reg_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_reg_defines.svh
+0 macros/uvm_deprecated_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/macros/uvm_deprecated_defines.svh
+0 dpi/uvm_dpi.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dpi/uvm_dpi.svh
+0 dpi/uvm_hdl.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dpi/uvm_hdl.svh
+0 dpi/uvm_svcmd_dpi.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dpi/uvm_svcmd_dpi.svh
+0 dpi/uvm_regex.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dpi/uvm_regex.svh
+0 base/uvm_base.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_base.svh
+0 base/uvm_coreservice.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_coreservice.svh
+0 base/uvm_version.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_version.svh
+0 base/uvm_object_globals.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_object_globals.svh
+0 base/uvm_misc.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_misc.svh
+0 base/uvm_object.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_object.svh
+0 base/uvm_pool.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_pool.svh
+0 base/uvm_queue.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_queue.svh
+0 base/uvm_factory.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_factory.svh
+0 base/uvm_registry.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_registry.svh
+0 base/uvm_spell_chkr.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_spell_chkr.svh
+0 base/uvm_resource.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_resource.svh
+0 base/uvm_resource_specializations.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_resource_specializations.svh
+0 base/uvm_resource_db.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_resource_db.svh
+0 base/uvm_config_db.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_config_db.svh
+0 base/uvm_printer.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_printer.svh
+0 base/uvm_comparer.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_comparer.svh
+0 base/uvm_packer.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_packer.svh
+0 base/uvm_links.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_links.svh
+0 base/uvm_tr_database.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_tr_database.svh
+0 base/uvm_tr_stream.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_tr_stream.svh
+0 base/uvm_recorder.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_recorder.svh
+0 base/uvm_event_callback.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_event_callback.svh
+0 base/uvm_event.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_event.svh
+0 base/uvm_barrier.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_barrier.svh
+0 base/uvm_callback.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_callback.svh
+0 base/uvm_report_message.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_report_message.svh
+0 base/uvm_report_catcher.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_report_catcher.svh
+0 base/uvm_report_server.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_report_server.svh
+0 base/uvm_report_handler.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_report_handler.svh
+0 base/uvm_report_object.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_report_object.svh
+0 base/uvm_transaction.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_transaction.svh
+0 base/uvm_phase.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_phase.svh
+0 base/uvm_domain.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_domain.svh
+0 base/uvm_bottomup_phase.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_bottomup_phase.svh
+0 base/uvm_topdown_phase.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_topdown_phase.svh
+0 base/uvm_task_phase.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_task_phase.svh
+0 base/uvm_common_phases.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_common_phases.svh
+0 base/uvm_runtime_phases.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_runtime_phases.svh
+0 base/uvm_component.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_component.svh
+0 base/uvm_root.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_root.svh
+0 base/uvm_objection.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_objection.svh
+0 base/uvm_heartbeat.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_heartbeat.svh
+0 base/uvm_globals.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_globals.svh
+0 base/uvm_cmdline_processor.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_cmdline_processor.svh
+0 base/uvm_traversal.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_traversal.svh
+0 dap/uvm_dap.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dap/uvm_dap.svh
+0 dap/uvm_set_get_dap_base.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dap/uvm_set_get_dap_base.svh
+0 dap/uvm_simple_lock_dap.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dap/uvm_simple_lock_dap.svh
+0 dap/uvm_get_to_lock_dap.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dap/uvm_get_to_lock_dap.svh
+0 dap/uvm_set_before_get_dap.svh
+0 /eda_tools/vcs201809/etc/systemverilog/dap/uvm_set_before_get_dap.svh
+0 tlm1/uvm_tlm.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_tlm.svh
+0 tlm1/uvm_tlm_ifs.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_tlm_ifs.svh
+0 tlm1/uvm_sqr_ifs.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_sqr_ifs.svh
+0 base/uvm_port_base.svh
+0 /eda_tools/vcs201809/etc/systemverilog/base/uvm_port_base.svh
+0 tlm1/uvm_imps.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_imps.svh
+0 tlm1/uvm_ports.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_ports.svh
+0 tlm1/uvm_exports.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_exports.svh
+0 tlm1/uvm_analysis_port.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_analysis_port.svh
+0 tlm1/uvm_tlm_fifo_base.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_tlm_fifo_base.svh
+0 tlm1/uvm_tlm_fifos.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_tlm_fifos.svh
+0 tlm1/uvm_tlm_req_rsp.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_tlm_req_rsp.svh
+0 tlm1/uvm_sqr_connections.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm1/uvm_sqr_connections.svh
+0 comps/uvm_comps.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_comps.svh
+0 comps/uvm_pair.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_pair.svh
+0 comps/uvm_policies.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_policies.svh
+0 comps/uvm_in_order_comparator.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_in_order_comparator.svh
+0 comps/uvm_algorithmic_comparator.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_algorithmic_comparator.svh
+0 comps/uvm_random_stimulus.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_random_stimulus.svh
+0 comps/uvm_subscriber.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_subscriber.svh
+0 comps/uvm_monitor.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_monitor.svh
+0 comps/uvm_driver.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_driver.svh
+0 comps/uvm_push_driver.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_push_driver.svh
+0 comps/uvm_scoreboard.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_scoreboard.svh
+0 comps/uvm_agent.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_agent.svh
+0 comps/uvm_env.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_env.svh
+0 comps/uvm_test.svh
+0 /eda_tools/vcs201809/etc/systemverilog/comps/uvm_test.svh
+0 seq/uvm_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_seq.svh
+0 seq/uvm_sequence_item.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequence_item.svh
+0 seq/uvm_sequencer_base.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequencer_base.svh
+0 seq/uvm_sequencer_analysis_fifo.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequencer_analysis_fifo.svh
+0 seq/uvm_sequencer_param_base.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequencer_param_base.svh
+0 seq/uvm_sequencer.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequencer.svh
+0 seq/uvm_push_sequencer.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_push_sequencer.svh
+0 seq/uvm_sequence_base.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequence_base.svh
+0 seq/uvm_sequence.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequence.svh
+0 seq/uvm_sequence_library.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequence_library.svh
+0 seq/uvm_sequence_builtin.svh
+0 /eda_tools/vcs201809/etc/systemverilog/seq/uvm_sequence_builtin.svh
+0 tlm2/uvm_tlm2.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2.svh
+0 tlm2/uvm_tlm2_defines.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_defines.svh
+0 tlm2/uvm_tlm2_time.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_time.svh
+0 tlm2/uvm_tlm2_generic_payload.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_generic_payload.svh
+0 tlm2/uvm_tlm2_ifs.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_ifs.svh
+0 tlm2/uvm_tlm2_imps.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_imps.svh
+0 tlm2/uvm_tlm2_ports.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_ports.svh
+0 tlm2/uvm_tlm2_exports.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_exports.svh
+0 tlm2/uvm_tlm2_sockets_base.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_sockets_base.svh
+0 tlm2/uvm_tlm2_sockets.svh
+0 /eda_tools/vcs201809/etc/systemverilog/tlm2/uvm_tlm2_sockets.svh
+0 reg/uvm_reg_model.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_model.svh
+0 reg/uvm_reg_item.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_item.svh
+0 reg/uvm_reg_adapter.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_adapter.svh
+0 reg/uvm_reg_predictor.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_predictor.svh
+0 reg/uvm_reg_sequence.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_sequence.svh
+0 reg/uvm_reg_cbs.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_cbs.svh
+0 reg/uvm_reg_backdoor.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_backdoor.svh
+0 reg/uvm_reg_field.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_field.svh
+0 reg/uvm_vreg_field.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_vreg_field.svh
+0 reg/uvm_reg.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg.svh
+0 reg/uvm_reg_indirect.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_indirect.svh
+0 reg/uvm_reg_fifo.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_fifo.svh
+0 reg/uvm_reg_file.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_file.svh
+0 reg/uvm_mem_mam.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_mem_mam.svh
+0 reg/uvm_vreg.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_vreg.svh
+0 reg/uvm_mem.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_mem.svh
+0 reg/uvm_reg_map.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_map.svh
+0 reg/uvm_reg_block.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/uvm_reg_block.svh
+0 reg/sequences/uvm_reg_hw_reset_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/sequences/uvm_reg_hw_reset_seq.svh
+0 reg/sequences/uvm_reg_bit_bash_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/sequences/uvm_reg_bit_bash_seq.svh
+0 reg/sequences/uvm_mem_walk_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/sequences/uvm_mem_walk_seq.svh
+0 reg/sequences/uvm_mem_access_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/sequences/uvm_mem_access_seq.svh
+0 reg/sequences/uvm_reg_access_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/sequences/uvm_reg_access_seq.svh
+0 reg/sequences/uvm_reg_mem_shared_access_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/sequences/uvm_reg_mem_shared_access_seq.svh
+0 reg/sequences/uvm_reg_mem_built_in_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/sequences/uvm_reg_mem_built_in_seq.svh
+0 reg/sequences/uvm_reg_mem_hdl_paths_seq.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/sequences/uvm_reg_mem_hdl_paths_seq.svh
+0 reg/snps_uvm_reg_bank.svh
+0 /eda_tools/vcs201809/etc/systemverilog/reg/snps_uvm_reg_bank.svh
+0 vcs/snps_reg.svh
+0 /eda_tools/vcs201809/etc/systemverilog/vcs/snps_reg.svh
+39
++acc
++cli+1
++define+UVM_OBJECT_MUST_HAVE_CONSTRUCTOR
++incdir+.
++incdir+/eda_tools/vcs201809/etc/uvm-1.2/src
++itf+/eda_tools/vcs201809/linux64/lib/vcsdp.tab
++memcbk
++vcsd
++vpi
++vpi
+-Mamsrun=
+-Masflags=
+-Mcc=gcc
+-Mcfl= -pipe -fPIC -DVCS -O -I/eda_tools/vcs201809/include
+-Mcplusplus=g++
+-Mcrt0=
+-Mcrtn=
+-Mcsrc=/eda_tools/vcs201809/etc/uvm-1.2/src/dpi/uvm_dpi.cc
+-Mexternalobj=
+-Mldflags= -Wl,--no-as-needed -rdynamic
+-Mobjects= /eda_tools/vcs201809/linux64/lib/libvirsim.so /eda_tools/vcs201809/linux64/lib/liberrorinf.so /eda_tools/vcs201809/linux64/lib/libsnpsmalloc.so /eda_tools/vcs201809/linux64/lib/libvfs.so
+-Mout=simv
+-Msaverestoreobj=/eda_tools/vcs201809/linux64/lib/vcs_save_restore_new.o
+-Msyslibs=-ldl
+-Mvcsaceobjs=
+-Mxcflags= -pipe -fPIC -I/eda_tools/vcs201809/include
+-Xcbug=0x1
+-cm
+-cm_dir
+-debug=1
+-gen_obj
+-picarchive
+-sverilog
+-timescale=1ns/1ns
+./coverage.vdb
+/eda_tools/vcs201809/etc/uvm-1.2/src/uvm.sv
+/eda_tools/vcs201809/linux64/bin/vcs1
+line+cond+fsm+branch+tgl
+simplealu_tb_top.sv
+75
+install_root=/softwares/softwares_setups/verilator-4.034
+XDG_SESSION_ID=34858
+XDG_RUNTIME_DIR=/run/user/1016
+XDG_MENU_PREFIX=xfce-
+XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop:/usr/share
+XDG_CURRENT_DESKTOP=XFCE
+XDG_CONFIG_DIRS=/etc/xdg
+VTE_VERSION=5202
+VNCDESKTOP=broadPeak:11 (hamzahassan)
+VMR_MODE_FLAG=32
+VERILATOR_ROOT=/softwares/softwares_setups/verilator-4.034
+VERDI_VCS_PLI=-P /eda_tools/verdi201809/share/PLI/VCS/LINUX64/novas.tab /eda_tools/verdi201809/share/PLI/VCS/LINUX64/pli.a
+VERDI_UVSIM_LIB=-L/eda_tools/verdi201809/share/PLI/IUS/LINUX64 -L/eda_tools/verdi201809/share/FsdbWriter/LINUX64
+VERDI_UVSIM_INCLUDE=-I/eda_tools/verdi201809/share/PLI/IUS/LINUX64
+VERDI_NCVERILOG_PLI=+loadpli1=/eda_tools/verdi201809/share/PLI/IUS/LINUX64/boot/debpli:novas_pli_boot
+VERDI_NCELAB_PLI=-LOADPLI1 /eda_tools/verdi201809/share/PLI/IUS/LINUX64/boot/debpli:novas_pli_boot
+VERDI_HOME=/eda_tools/verdi201809
+VERDI_FSDBSC=-L/eda_tools/verdi201809/share/PLI/IUS/LINUX64 -lfsdbSC -L/eda_tools/verdi201809/share/FsdbWriter/LINUX64 -lnffw -I/eda_tools/verdi201809/share/PLI/IUS/LINUX64
+VERDI=/eda_tools/verdi201809
+VCS_TARGET_ARCH=amd64
+VCS_MX_HOME_INTERNAL=1
+VCS_HOME=/eda_tools/vcs201809
+VCS_DEPTH=0
+VCS_ARG_ADDED_FOR_TMP=1
+VCS_ARCH_OVERRIDE=linux
+VCS_ARCH=linux64
+UNAME=/bin/uname
+TOOL_HOME=/eda_tools/vcs201809/linux64
+TERMINATOR_UUID=urn:uuid:02aa15e6-8bde-45f2-928d-358f5c57233b
+TERMINATOR_DBUS_PATH=/net/tenshu/Terminator2
+TERMINATOR_DBUS_NAME=net.tenshu.Terminator20x759fefb18a339e2f
+S_COLORS=auto
+SYSTEMC_HOME_2=/usr/local/systemc-2.3/
+SYSTEMC_HOME=/usr/local/systemc-2.3.1/
+SYNOP_VCS=/eda_tools/vcs201809/bin
+SYNOP_PT=/eda_tools/pt201806
+SYNOP_FM=/eda_tools/formaility-201806sp5
+SSH_TTY=/dev/pts/64
+SSH_CONNECTION=192.168.94.108 58428 192.168.14.240 20779
+SSH_CLIENT=192.168.94.108 58428 20779
+SSH_AUTH_SOCK=/tmp/ssh-8qnIBtSI93qz/agent.15951
+SSH_AGENT_PID=15952
+SNPS_VCS_INTERNAL_UBUNTU_PRE_LDFLAGS= -no-pie 
+SESSION_MANAGER=local/BroadPeak:@/tmp/.ICE-unix/15941,unix/BroadPeak:/tmp/.ICE-unix/15941
+SCRNAME=vcs
+SCRIPT_NAME=vcs
+RISCV_PATH=/home/users/cores/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14
+RISCV=/home/users/cores/rocket-chip/riscv_toolchain
+PLATFORM=LINUX64
+OVA_UUM=0
+NOVS_VERDI=/eda_tools/verdi201809/bin
+NOVAS_HOME=/eda_tools/verdi201809
+MFLAGS=
+MAKE_TERMOUT=/dev/pts/133
+MAKE_TERMERR=/dev/pts/133
+MAKELEVEL=1
+MAKEFLAGS=
+LC_TIME=en_US.UTF-8
+LC_TELEPHONE=ur_PK
+LC_PAPER=ur_PK
+LC_NUMERIC=ur_PK
+LC_NAME=ur_PK
+LC_MONETARY=ur_PK
+LC_MEASUREMENT=ur_PK
+LC_IDENTIFICATION=ur_PK
+LC_ALL=C
+LC_ADDRESS=ur_PK
+GLADE_PIXMAP_PATH=:
+GLADE_MODULE_PATH=:
+GLADE_CATALOG_PATH=:
+DESKTOP_SESSION=xfce
+DEBUSSY_HOME=/eda_tools/verdi201809
+DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-gY8Ts1pADJ,guid=31b2289d37ca747cd186f5c161126190
+COLORTERM=truecolor
+ARCH=amd64
+0
+155
+1629876050 ../RTL/axi_lite_master.sv
+1630404283 ../RTL/axi_lite_if.sv
+1630326549 ../RTL/APB_Slave.v
+1630406700 ../RTL/axi_apb_bridge.v
+1629438660 ../RTL/flop.v
+1630397070 ../RTL/apb_master.v
+1629202137 ../RTL/axi_lite_pkg.sv
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/vcs/snps_reg.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/snps_uvm_reg_bank.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/sequences/uvm_reg_mem_hdl_paths_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/sequences/uvm_reg_mem_built_in_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/sequences/uvm_reg_mem_shared_access_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/sequences/uvm_reg_access_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/sequences/uvm_mem_access_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/sequences/uvm_mem_walk_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/sequences/uvm_reg_bit_bash_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/sequences/uvm_reg_hw_reset_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_block.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_map.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_mem.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_vreg.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_mem_mam.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_file.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_fifo.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_indirect.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_vreg_field.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_field.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_backdoor.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_cbs.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_sequence.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_predictor.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_adapter.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_item.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/reg/uvm_reg_model.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_sockets.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_sockets_base.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_exports.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_ports.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_imps.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_ifs.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_generic_payload.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_time.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm2/uvm_tlm2.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequence_builtin.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequence_library.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequence.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequence_base.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_push_sequencer.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequencer.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequencer_param_base.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequencer_analysis_fifo.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequencer_base.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_sequence_item.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/seq/uvm_seq.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_test.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_env.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_agent.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_scoreboard.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_push_driver.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_driver.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_monitor.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_subscriber.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_random_stimulus.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_algorithmic_comparator.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_in_order_comparator.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_policies.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_pair.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/comps/uvm_comps.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_sqr_connections.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_tlm_req_rsp.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_tlm_fifos.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_tlm_fifo_base.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_analysis_port.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_exports.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_ports.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_imps.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_port_base.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_sqr_ifs.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_tlm_ifs.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_tlm.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dap/uvm_set_before_get_dap.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dap/uvm_get_to_lock_dap.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dap/uvm_simple_lock_dap.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dap/uvm_set_get_dap_base.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dap/uvm_dap.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_traversal.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_cmdline_processor.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_globals.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_heartbeat.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_objection.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_root.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_component.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_runtime_phases.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_common_phases.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_task_phase.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_topdown_phase.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_bottomup_phase.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_domain.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_phase.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_transaction.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_report_object.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_report_handler.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_report_server.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_report_catcher.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_report_message.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_callback.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_barrier.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_event.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_event_callback.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_recorder.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_tr_stream.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_tr_database.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_links.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_packer.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_comparer.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_printer.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_config_db.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_resource_db.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_resource_specializations.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_resource.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_spell_chkr.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_registry.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_factory.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_queue.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_pool.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_object.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_misc.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_object_globals.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_version.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_coreservice.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/base/uvm_base.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dpi/uvm_regex.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dpi/uvm_svcmd_dpi.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dpi/uvm_hdl.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dpi/uvm_dpi.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_deprecated_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_reg_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_callback_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_sequence_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/tlm1/uvm_tlm_imps.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_tlm_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_printer_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_object_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_phase_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_message_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_global_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/macros/uvm_version_defines.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/uvm_macros.svh
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/uvm_pkg.sv
+1630406813 simplealu_tb_top.sv
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/uvm.sv
+1591195209 /eda_tools/vcs201809/include/cm_vcsd.tab
+1591195212 /eda_tools/vcs201809/linux64/lib/vcsdp.tab
+5
+1591195213 /eda_tools/vcs201809/etc/uvm-1.2/src/dpi/uvm_dpi.cc
+1591195211 /eda_tools/vcs201809/linux64/lib/libvirsim.so
+1591195213 /eda_tools/vcs201809/linux64/lib/liberrorinf.so
+1591195211 /eda_tools/vcs201809/linux64/lib/libsnpsmalloc.so
+1591195212 /eda_tools/vcs201809/linux64/lib/libvfs.so
+1630406976 simv.daidir
+-1 partitionlib
