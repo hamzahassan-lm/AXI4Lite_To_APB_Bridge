@@ -8,9 +8,6 @@ run a simulation and see a live example
 
 ## Project Structure
    * RTL
-	* Axi_Apb_Bridge
-		- Apb_Master
-		- Flop
    * testbench 
 	
 ### Building Depencencies
