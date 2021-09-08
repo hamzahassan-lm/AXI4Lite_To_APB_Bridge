@@ -3,8 +3,12 @@ import uvm_pkg::*;
 import axi_lite_pkg::*;
 `include "uvm_macros.svh"
 
+
 `include "../RTL/apb_master.v"
+`include "../RTL/address_decoder.v"
+`include "../RTL/read_data_mux.v"
 `include "../RTL/flop.v"
+
 
 `include "../RTL/axi_apb_bridge.v"
 `include "../RTL/APB_Slave.v"

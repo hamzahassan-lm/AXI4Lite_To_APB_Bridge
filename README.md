@@ -15,14 +15,14 @@ Before building this project, you must build the following libraries in order
 ### RTL
 Contains RTL for all the Modules used in the Design.
 
+   * axi_apb_bridge.v
+      * The main module having all the logic of the bridge comprising of a state machine for AXI4_SLAVE
    * axi_lite_pkg.sv
       * contains the structures and datatypes defined for axi_lite transactions
    * apb_master.v
       * RTL for the APB master that is instantiated inside the bridge
    * flop.v
-      * RTL for a synchronous flop having active low reset that is for registers in the design
-   * axi_apb_bridge.v
-      * The main module having all the logic of the bridge comprising of a state machine for AXI4_SLAVE 
+      * RTL for a synchronous flop having active low reset that is for registers in the design 
    * APB_Slave.v
       * APB slave for testing
    * axi_lite_if.sv

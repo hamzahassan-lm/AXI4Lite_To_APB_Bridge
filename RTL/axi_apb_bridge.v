@@ -1,3 +1,9 @@
+/*
+`include "apb_master.v"
+`include "address_decoder.v"
+`include "read_data_mux.v"
+`include "flop.v"
+*/
 
 module axi_apb_bridge
 	#(parameter c_apb_num_slaves = 1,
@@ -356,16 +362,40 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 	end
 end
 
-genvar i;
-/*
-generate
-	for(i=0;i<c_apb_num_slaves;i=i+1) assign SSEL[i] = (captured_addr >= memory_regions1[i]) & ((state == Access)|(state == Setup)) & (captured_addr <= memory_regions2[i]) ;
-endgenerate
-*/
-generate
-	for(i=32;i<=c_apb_num_slaves*32;i=i+32) assign SSEL[(i-32)/32] = (captured_addr >= memory_regions1[i-1:(i-32)]) & ((state == Access)|(state == Setup)) & (captured_addr <= memory_regions2[i-1:(i-32)]) ;
-endgenerate
+wire[c_apb_num_slaves-1:0] ssel_addr_decoder;
 
+address_decoder 
+	#(.c_apb_num_slaves(c_apb_num_slaves),
+	  .memory_regions1(memory_regions1),
+	  .memory_regions2(memory_regions2)
+	  )
+	addr_decoder (captured_addr,ssel_addr_decoder);
+
+assign SSEL   = ssel_addr_decoder & {c_apb_num_slaves{(((state == Access)|(state == Setup)))}};
+
+read_data_mux 
+	#(.c_apb_num_slaves(c_apb_num_slaves)
+	  )
+	read_data_mux_ (m_apb_psel,
+			m_apb_prdata,
+			m_apb_prdata2,
+			m_apb_prdata3,
+			m_apb_prdata4,
+			m_apb_prdata5,
+			m_apb_prdata6,
+			m_apb_prdata7,
+			m_apb_prdata8,
+			m_apb_prdata9,
+			m_apb_prdata10,
+			m_apb_prdata11,
+			m_apb_prdata12,
+			m_apb_prdata13,
+			m_apb_prdata14,
+			m_apb_prdata15,
+			m_apb_prdata16,
+			sel_m_apb_prdata);
+
+/*
 assign sel_m_apb_prdata = {32{(m_apb_psel == 16'h0001)}} & m_apb_prdata   |
                           {32{(m_apb_psel == 16'h0002)}} & m_apb_prdata2  |
                           {32{(m_apb_psel == 16'h0004)}} & m_apb_prdata3  |
@@ -382,5 +412,6 @@ assign sel_m_apb_prdata = {32{(m_apb_psel == 16'h0001)}} & m_apb_prdata   |
                           {32{(m_apb_psel == 16'h2000)}} & m_apb_prdata14 |
                           {32{(m_apb_psel == 16'h4000)}} & m_apb_prdata15 |
                           {32{(m_apb_psel == 16'h8000)}} & m_apb_prdata16;
+*/
 
 endmodule
