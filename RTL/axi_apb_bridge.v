@@ -148,6 +148,7 @@ wire [31:0]                 sel_m_apb_prdata;
 wire [31:0]                 SADDR;
 wire                        apb_reset;
 wire                        STREQ;
+wire[c_apb_num_slaves-1:0] ssel_addr_decoder;
 
 apb_master #(.c_apb_num_slaves(c_apb_num_slaves))
 		UUT (s_axi_clk, apb_reset, STREQ, SWRT, SSEL,SADDR,SWDATA,WSTRB,SRDATA, m_apb_paddr, m_apb_pprot, m_apb_psel, m_apb_penable,
@@ -155,6 +156,35 @@ apb_master #(.c_apb_num_slaves(c_apb_num_slaves))
                 m_apb_prdata4, m_apb_prdata5, m_apb_prdata6, m_apb_prdata7, m_apb_prdata8, m_apb_prdata9, m_apb_prdata10,
                 m_apb_prdata11, m_apb_prdata12, m_apb_prdata13, m_apb_prdata14, m_apb_prdata15, m_apb_prdata16, state);
 
+
+address_decoder 
+	   #(.c_apb_num_slaves(c_apb_num_slaves),
+	     .memory_regions1(memory_regions1),
+	     .memory_regions2(memory_regions2))
+	   addr_decoder (captured_addr,ssel_addr_decoder);
+
+read_data_mux 
+	   #(.c_apb_num_slaves(c_apb_num_slaves))
+	   read_data_mux_ (
+		m_apb_psel,
+		m_apb_prdata,
+		m_apb_prdata2,
+		m_apb_prdata3,
+		m_apb_prdata4,
+		m_apb_prdata5,
+		m_apb_prdata6,
+		m_apb_prdata7,
+		m_apb_prdata8,
+		m_apb_prdata9,
+		m_apb_prdata10,
+		m_apb_prdata11,
+		m_apb_prdata12,
+		m_apb_prdata13,
+		m_apb_prdata14,
+		m_apb_prdata15,
+		m_apb_prdata16,
+		sel_m_apb_prdata
+	     );
 
 
 wire condition1_state_Idle  = (bridge_state == Bridge_Idle) & ((write_happened && s_axi_bready)||(!write_happened));
@@ -362,56 +392,8 @@ always@(posedge s_axi_clk or negedge s_axi_aresetn) begin
 	end
 end
 
-wire[c_apb_num_slaves-1:0] ssel_addr_decoder;
-
-address_decoder 
-	#(.c_apb_num_slaves(c_apb_num_slaves),
-	  .memory_regions1(memory_regions1),
-	  .memory_regions2(memory_regions2)
-	  )
-	addr_decoder (captured_addr,ssel_addr_decoder);
 
 assign SSEL   = ssel_addr_decoder & {c_apb_num_slaves{(((state == Access)|(state == Setup)))}};
 
-read_data_mux 
-	#(.c_apb_num_slaves(c_apb_num_slaves)
-	  )
-	read_data_mux_ (m_apb_psel,
-			m_apb_prdata,
-			m_apb_prdata2,
-			m_apb_prdata3,
-			m_apb_prdata4,
-			m_apb_prdata5,
-			m_apb_prdata6,
-			m_apb_prdata7,
-			m_apb_prdata8,
-			m_apb_prdata9,
-			m_apb_prdata10,
-			m_apb_prdata11,
-			m_apb_prdata12,
-			m_apb_prdata13,
-			m_apb_prdata14,
-			m_apb_prdata15,
-			m_apb_prdata16,
-			sel_m_apb_prdata);
-
-/*
-assign sel_m_apb_prdata = {32{(m_apb_psel == 16'h0001)}} & m_apb_prdata   |
-                          {32{(m_apb_psel == 16'h0002)}} & m_apb_prdata2  |
-                          {32{(m_apb_psel == 16'h0004)}} & m_apb_prdata3  |
-                          {32{(m_apb_psel == 16'h0008)}} & m_apb_prdata4  |
-                          {32{(m_apb_psel == 16'h0010)}} & m_apb_prdata5  |
-                          {32{(m_apb_psel == 16'h0020)}} & m_apb_prdata6  |
-                          {32{(m_apb_psel == 16'h0040)}} & m_apb_prdata7  |
-                          {32{(m_apb_psel == 16'h0080)}} & m_apb_prdata8  |
-                          {32{(m_apb_psel == 16'h0100)}} & m_apb_prdata9  |
-                          {32{(m_apb_psel == 16'h0200)}} & m_apb_prdata10 |
-                          {32{(m_apb_psel == 16'h0400)}} & m_apb_prdata11 |
-                          {32{(m_apb_psel == 16'h0800)}} & m_apb_prdata12 |
-                          {32{(m_apb_psel == 16'h1000)}} & m_apb_prdata13 |
-                          {32{(m_apb_psel == 16'h2000)}} & m_apb_prdata14 |
-                          {32{(m_apb_psel == 16'h4000)}} & m_apb_prdata15 |
-                          {32{(m_apb_psel == 16'h8000)}} & m_apb_prdata16;
-*/
 
 endmodule
